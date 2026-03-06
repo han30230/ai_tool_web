@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { getBaseUrl } from "@/lib/site";
 import { Analytics } from "@/components/Analytics";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 
 function getBaseUrlFromRequest(): string {
   const h = headers();
@@ -105,7 +106,10 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        {/* Google Analytics (optional; only loads when NEXT_PUBLIC_GA_ID is set) */}
         <Analytics />
+        {/* Vercel Analytics – page views and Web Vitals on every page */}
+        <VercelAnalytics />
       </body>
     </html>
   );
