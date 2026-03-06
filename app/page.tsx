@@ -12,12 +12,20 @@ import { DataDisclaimer } from "@/components/DataDisclaimer";
 import { getBaseUrl } from "@/lib/site";
 
 export const metadata = {
-  title: "AI 툴 올인원 | 검색·비교·추천",
-  description: "모든 AI 툴을 한 곳에서. 실제 서비스 중인 AI를 카테고리·가격·기능으로 비교하고 업무에 맞는 AI 도구를 발견하세요.",
+  title: "AI 툴 올인원 | AI 서비스 모음",
+  description:
+    "500개 이상의 AI 도구를 카테고리, 가격, 기능별로 비교하고 나에게 맞는 AI 툴을 빠르게 찾아보세요.",
   keywords: ["AI 툴", "AI 도구", "챗봇", "이미지 생성", "AI 비교", "AI 디렉토리"],
   alternates: { canonical: getBaseUrl() },
-  openGraph: { url: getBaseUrl(), title: "AI 툴 올인원 | 검색·비교·추천", description: "실제 서비스 중인 AI를 비교하고 발견하세요." },
-  twitter: { card: "summary_large_image" as const },
+  openGraph: {
+    url: getBaseUrl(),
+    siteName: "AI 툴 올인원",
+    title: "AI 툴 올인원 | AI 서비스 모음",
+    description:
+      "500개 이상의 AI 도구를 카테고리, 가격, 기능별로 비교하고 나에게 맞는 AI 툴을 빠르게 찾아보세요.",
+    images: [{ url: `${getBaseUrl()}/og-image.png`, width: 1200, height: 630, alt: "AI 툴 올인원" }],
+  },
+  twitter: { card: "summary_large_image" as const, images: [`${getBaseUrl()}/og-image.png`] },
 };
 
 export default async function HomePage() {

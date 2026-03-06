@@ -131,6 +131,18 @@ Meilisearch를 붙이는 경우:
 
 서비스·제휴·툴 제출 문의: **han30230@gmail.com** (문의 페이지 `/contact`에서 동일 이메일 사용)
 
+### 링크 공유 미리보기 (Open Graph)
+
+카카오톡·Slack·Discord·Twitter·네이버 등에서 링크 공유 시 미리보기가 표시됩니다.
+
+- **제목**: AI 툴 올인원 | AI 서비스 모음
+- **설명**: 500개 이상의 AI 도구를 카테고리, 가격, 기능별로 비교하고 나에게 맞는 AI 툴을 빠르게 찾아보세요.
+- **이미지**: `public/og-image.png` (1200×630, 블루 그라데이션 + "AI 툴 올인원", "500+ AI Tools Directory")가 공유 미리보기에 사용됩니다.
+
+**캐시 문제 시**: 플랫폼이 이전 미리보기를 캐시하면 새 이미지/제목이 바로 안 바뀔 수 있습니다.  
+카카오톡은 [캐시 초기화](https://developers.kakao.com/tool/debugger/sharing)에서 URL 입력 후 "캐시 초기화" 실행.  
+Twitter는 [Card Validator](https://cards-dev.twitter.com/validator), Facebook은 [공유 디버거](https://developers.facebook.com/tools/debug/)에서 URL 재검증 후 캐시 갱신.
+
 ### 배포 전 확인
 
 - `docs/DEPLOYMENT_CHECKLIST.md` 참고.
