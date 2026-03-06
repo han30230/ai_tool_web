@@ -3,6 +3,16 @@ export function getBaseUrl(): string {
   if (typeof process.env.NEXT_PUBLIC_SITE_URL === "string" && process.env.NEXT_PUBLIC_SITE_URL) {
     return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
   }
+  /**
+   * Vercel provides `VERCEL_URL` (e.g. "altobox.site" or "my-app.vercel.app").
+   * Use it as a safe fallback so OG/canonical use the deployed domain even when
+   * NEXT_PUBLIC_SITE_URL is not explicitly set.
+   */
+  if (typeof process.env.VERCEL_URL === "string" && process.env.VERCEL_URL) {
+    const raw = process.env.VERCEL_URL.replace(/\/$/, "");
+    const withProtocol = raw.startsWith("http://") || raw.startsWith("https://") ? raw : `https://${raw}`;
+    return withProtocol;
+  }
   return "https://ai-tool-allinone.vercel.app";
 }
 
