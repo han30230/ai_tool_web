@@ -6,7 +6,6 @@ import { getBaseUrl } from "@/lib/site";
 import { Analytics } from "@/components/Analytics";
 
 const baseUrl = getBaseUrl();
-const ogImageUrl = `${baseUrl}/og-image.png`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -27,7 +26,8 @@ export const metadata: Metadata = {
       "500개 이상의 AI 도구를 카테고리, 가격, 기능별로 비교하고 나에게 맞는 AI 툴을 빠르게 찾아보세요.",
     images: [
       {
-        url: ogImageUrl,
+        url: "/og-image.png",
+        type: "image/png",
         width: 1200,
         height: 630,
         alt: "AI 툴 올인원 | 500+ AI Tools Directory",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     title: "AI 툴 올인원 | AI 서비스 모음",
     description:
       "500개 이상의 AI 도구를 카테고리, 가격, 기능별로 비교하고 나에게 맞는 AI 툴을 빠르게 찾아보세요.",
-    images: [ogImageUrl],
+    images: ["/og-image.png"],
   },
   alternates: { canonical: baseUrl },
   icons: {

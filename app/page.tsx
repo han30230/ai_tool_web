@@ -23,9 +23,9 @@ export const metadata = {
     title: "AI 툴 올인원 | AI 서비스 모음",
     description:
       "500개 이상의 AI 도구를 카테고리, 가격, 기능별로 비교하고 나에게 맞는 AI 툴을 빠르게 찾아보세요.",
-    images: [{ url: `${getBaseUrl()}/og-image.png`, width: 1200, height: 630, alt: "AI 툴 올인원" }],
+    images: [{ url: "/og-image.png", type: "image/png", width: 1200, height: 630, alt: "AI 툴 올인원" }],
   },
-  twitter: { card: "summary_large_image" as const, images: [`${getBaseUrl()}/og-image.png`] },
+  twitter: { card: "summary_large_image" as const, images: ["/og-image.png"] },
 };
 
 export default async function HomePage() {
