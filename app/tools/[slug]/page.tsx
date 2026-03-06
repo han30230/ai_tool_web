@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getToolBySlug, getSimilarTools } from "@/lib/tools";
 import { getCategoryBySlug } from "@/lib/categories";
+import { getBaseUrl } from "@/lib/site";
 import {
   getFeatures,
   getUseCases,
@@ -16,6 +17,9 @@ import {
 import { ToolLogo } from "@/components/ToolLogo";
 import { ToolCard } from "@/components/ToolCard";
 import { SubscribeCTA } from "@/components/SubscribeCTA";
+import { Breadcrumb } from "@/components/Breadcrumb";
+import { ShareButtons } from "@/components/ShareButtons";
+import { DataDisclaimer } from "@/components/DataDisclaimer";
 
 export async function generateMetadata({
   params,
@@ -26,13 +30,17 @@ export async function generateMetadata({
   const tool = getToolBySlug(slug);
   if (!tool) return { title: "툴을 찾을 수 없음" };
   const ogImage = getFirstScreenshotOrPlaceholder(tool);
+  const canonical = `${getBaseUrl()}/tools/${slug}`;
   return {
     title: `${tool.name} 사용법·가격·대안 | AI 툴 올인원`,
     description: tool.description,
+    keywords: [tool.name, "AI", "대안", "비교", ...tool.tags],
+    alternates: { canonical },
     openGraph: {
       title: `${tool.name} | AI 툴 올인원`,
       description: tool.description,
       type: "website",
+      url: canonical,
       images: [{ url: ogImage, width: 1200, height: 630, alt: tool.name }],
     },
     twitter: { card: "summary_large_image", title: `${tool.name} | AI 툴 올인원`, description: tool.description },
@@ -58,6 +66,7 @@ export default async function ToolDetailPage({
   const lastUpdated = getLastUpdatedAt(tool);
   const pricingPlans = getPricingPlans(tool);
 
+  const baseUrl = getBaseUrl();
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -72,11 +81,30 @@ export default async function ToolDetailPage({
       priceCurrency: "KRW",
     },
   };
+  const jsonLdBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "홈", item: baseUrl },
+      { "@type": "ListItem", position: 2, name: "AI 서비스 모음", item: `${baseUrl}/tools` },
+      ...(category ? [{ "@type": "ListItem" as const, position: 3, name: category.name, item: `${baseUrl}/categories/${tool.category}` }] : []),
+      { "@type": "ListItem" as const, position: category ? 4 : 3, name: tool.name, item: `${baseUrl}/tools/${tool.slug}` },
+    ],
+  };
+
+  const toolUrl = `${baseUrl}/tools/${tool.slug}`;
+  const breadcrumbItems = [
+    { label: "홈", href: "/" },
+    { label: "AI 서비스 모음", href: "/tools" },
+    ...(category ? [{ label: category.name, href: `/categories/${tool.category}` }] : []),
+    { label: tool.name },
+  ];
 
   return (
     <div className="min-h-screen">
+      <Breadcrumb items={breadcrumbItems} />
       {/* 1. Overview (Hero) */}
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="mt-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-start gap-4">
           <ToolLogo tool={tool} size={80} className="rounded-xl" />
           <div className="min-w-0 flex-1">
@@ -102,6 +130,9 @@ export default async function ToolDetailPage({
               <span className="rounded-md bg-slate-50 px-2.5 py-1 text-xs text-slate-500">
                 최근 업데이트: {lastUpdated}
               </span>
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-4">
+              <ShareButtons url={toolUrl} title={`${tool.name} | AI 툴 올인원`} description={shortDesc} />
             </div>
             <div className="mt-4 flex flex-wrap gap-2">
               <a
@@ -130,6 +161,7 @@ export default async function ToolDetailPage({
             <h2 className="text-lg font-semibold text-slate-900">Overview</h2>
             <div className="mt-3 h-px bg-slate-200" />
             <p className="mt-3 text-slate-600 leading-relaxed">{tool.description}</p>
+            <DataDisclaimer />
           </section>
 
           {/* 2. Key Features */}
@@ -224,11 +256,16 @@ export default async function ToolDetailPage({
 
           {/* 6. Similar Tools */}
           <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-lg font-semibold text-slate-900">Similar Tools</h2>
-              <Link href="/tools" className="text-sm font-medium text-primary hover:underline">
-                비교하기
-              </Link>
+              <div className="flex gap-3">
+                <Link href={`/alternatives/${tool.slug}`} className="text-sm font-medium text-primary hover:underline">
+                  {tool.name} 대안 더 보기
+                </Link>
+                <Link href="/tools" className="text-sm font-medium text-primary hover:underline">
+                  전체 비교
+                </Link>
+              </div>
             </div>
             <div className="mt-3 h-px bg-slate-200" />
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -259,10 +296,8 @@ export default async function ToolDetailPage({
         </div>
       </div>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }} />
     </div>
   );
 }

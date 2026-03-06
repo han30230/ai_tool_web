@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { filterTools, getCategoriesWithCount } from "@/lib/tools";
+import { getBaseUrl } from "@/lib/site";
+import { filterTools, getCategoriesWithCount, getTotalToolsCount } from "@/lib/tools";
 import { ToolCard } from "@/components/ToolCard";
 import { SearchBar } from "@/components/SearchBar";
 import { CategoryPills } from "@/components/CategoryPills";
@@ -12,11 +13,11 @@ const PAGE_SIZE = 36;
 export const metadata: Metadata = {
   title: "AI 툴 모음 | 검색·비교·추천",
   description:
-    "500개 이상의 AI 도구를 카테고리·가격·기능으로 필터하고 비교하세요. 챗봇, 이미지 생성, 코딩, 마케팅 등.",
-  openGraph: {
-    title: "AI 툴 모음 | AI 툴 올인원",
-    description: "500개 이상의 AI 도구를 검색하고 비교하세요.",
-  },
+    "실제 서비스 중인 AI 도구를 카테고리·가격·기능으로 필터하고 비교하세요. 챗봇, 이미지 생성, 코딩, 마케팅 등.",
+  keywords: ["AI 툴", "AI 도구 목록", "챗봇", "이미지 생성", "코딩", "마케팅"],
+  alternates: { canonical: `${getBaseUrl()}/tools` },
+  openGraph: { title: "AI 툴 모음 | AI 툴 올인원", description: "실제 AI 도구를 검색하고 비교하세요." },
+  twitter: { card: "summary_large_image" as const },
 };
 
 type SearchParams = { category?: string; pricing?: string; korean?: string; tag?: string; q?: string; sort?: string; page?: string };
@@ -49,6 +50,7 @@ export default async function ToolsPage({
   const start = (currentPage - 1) * PAGE_SIZE;
   const pageTools = filtered.slice(start, start + PAGE_SIZE);
   const categoriesWithCount = getCategoriesWithCount();
+  const totalCount = getTotalToolsCount();
 
   return (
     <div className="space-y-6">
@@ -62,7 +64,7 @@ export default async function ToolsPage({
       <SearchBar placeholder="툴 이름, 태그로 검색..." />
 
       <Suspense fallback={<div className="h-10 animate-pulse rounded-full bg-slate-100 w-full max-w-2xl" />}>
-        <CategoryPills categoriesWithCount={categoriesWithCount} />
+        <CategoryPills categoriesWithCount={categoriesWithCount} totalCount={totalCount} />
       </Suspense>
 
       <ToolsFilter
@@ -77,7 +79,11 @@ export default async function ToolsPage({
       </div>
 
       {pageTools.length === 0 && (
-        <p className="py-12 text-center text-slate-500">조건에 맞는 툴이 없습니다.</p>
+        <div className="rounded-xl border border-slate-200 bg-slate-50 py-12 text-center">
+          <p className="text-slate-600">검색 조건에 맞는 툴이 없습니다.</p>
+          <p className="mt-1 text-sm text-slate-500">필터를 바꾸거나 검색어를 수정해 보세요.</p>
+          <a href="/tools" className="mt-4 inline-block rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90">전체 목록 보기</a>
+        </div>
       )}
 
       {totalPages > 1 && (

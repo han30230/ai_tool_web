@@ -2,6 +2,8 @@ import Link from "next/link";
 
 const nav = [
   { href: "/tools", label: "AI 서비스 모음" },
+  { href: "/collections", label: "컬렉션" },
+  { href: "/pricing/free", label: "무료 툴" },
   { href: "/articles", label: "AI 관련 글" },
   { href: "/news", label: "AI 소식" },
   { href: "/contact", label: "문의" },

@@ -3,10 +3,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCategoryBySlug } from "@/lib/categories";
-import { getToolsByCategory, getCategoriesWithCount } from "@/lib/tools";
+import { getToolsByCategory, getCategoriesWithCount, getTotalToolsCount } from "@/lib/tools";
+import { getBaseUrl } from "@/lib/site";
 import { ToolCard } from "@/components/ToolCard";
 import { CategoryPills } from "@/components/CategoryPills";
 import { Pagination } from "@/components/Pagination";
+import { Breadcrumb } from "@/components/Breadcrumb";
 
 const PAGE_SIZE = 24;
 
@@ -18,13 +20,12 @@ export async function generateMetadata({
   const { category } = await params;
   const cat = getCategoryBySlug(category);
   if (!cat) return { title: "카테고리를 찾을 수 없음" };
+  const canonical = `${getBaseUrl()}/categories/${category}`;
   return {
     title: `${cat.name} AI 툴 | AI 툴 올인원`,
     description: cat.description + " 카테고리의 AI 도구 목록입니다.",
-    openGraph: {
-      title: `${cat.name} AI 툴 | AI 툴 올인원`,
-      description: cat.description,
-    },
+    alternates: { canonical },
+    openGraph: { title: `${cat.name} AI 툴 | AI 툴 올인원`, description: cat.description, url: canonical },
   };
 }
 
@@ -51,6 +52,7 @@ export default async function CategoryPage({
   const start = (currentPage - 1) * PAGE_SIZE;
   const pageTools = sorted.slice(start, start + PAGE_SIZE);
   const categoriesWithCount = getCategoriesWithCount();
+  const totalCount = getTotalToolsCount();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -70,23 +72,23 @@ export default async function CategoryPage({
     })),
   };
 
+  const breadcrumbItems = [
+    { label: "홈", href: "/" },
+    { label: "AI 서비스 모음", href: "/tools" },
+    { label: cat.name },
+  ];
+
   return (
     <div className="space-y-6">
+      <Breadcrumb items={breadcrumbItems} />
       <div>
-        <nav className="text-sm text-slate-500">
-          <Link href="/tools" className="hover:text-primary">
-            AI 툴
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-slate-700">{cat.name}</span>
-        </nav>
-        <h1 className="mt-2 text-2xl font-bold text-slate-900">{cat.name}</h1>
+        <h1 className="text-2xl font-bold text-slate-900">{cat.name}</h1>
         <p className="mt-1 text-slate-600">{cat.description}</p>
         <p className="mt-1 text-sm text-slate-500">총 {tools.length}개 툴</p>
       </div>
 
       <Suspense fallback={<div className="h-10 animate-pulse rounded-full bg-slate-100 w-full" />}>
-        <CategoryPills categoriesWithCount={categoriesWithCount} />
+        <CategoryPills categoriesWithCount={categoriesWithCount} totalCount={totalCount} />
       </Suspense>
 
       {featured.length > 0 && (

@@ -1,5 +1,5 @@
 /**
- * Seed data: 200+ AI tools by category.
+ * Seed data: real AI tools only (no synthetic/placeholder entries).
  * Run: node scripts/seed-data.js
  * Output: data/tools.json
  */
@@ -268,39 +268,6 @@ const rawTools = [
   { name: "Taplio", description: "링크드인 콘텐츠·성장.", category: "social-media", tags: ["링크드인", "콘텐츠"], pricing: "무료+유료", korean_support: false, website_url: "https://taplio.com", featured: false },
 ];
 
-// Category slugs (must match lib/categories.ts) for expansion
-const CATEGORY_SLUGS = [
-  "chatbot-llm", "image-generation", "video-generation", "audio-voice", "writing",
-  "productivity", "coding", "design", "marketing", "seo", "data-analytics", "research",
-  "education", "automation", "no-code", "3d-gaming", "business", "translation",
-  "presentation", "social-media",
-];
-
-const MIN_PER_CATEGORY = 25;
-const PRICING_OPTIONS = ["무료", "무료+유료", "유료"];
-const TAG_POOL = {
-  "chatbot-llm": ["대화", "LLM", "챗봇", "AI", "어시스턴트"],
-  "image-generation": ["이미지", "생성", "AI", "디자인", "아트"],
-  "video-generation": ["영상", "비디오", "편집", "생성", "AI"],
-  "audio-voice": ["음성", "TTS", "오디오", "AI", "클론"],
-  writing: ["글쓰기", "카피", "콘텐츠", "AI", "요약"],
-  productivity: ["생산성", "메모", "업무", "AI", "자동화"],
-  coding: ["코딩", "개발", "API", "AI", "자동완성"],
-  design: ["디자인", "UI", "그래픽", "AI", "자동화"],
-  marketing: ["마케팅", "광고", "캠페인", "AI", "콘텐츠"],
-  seo: ["SEO", "키워드", "검색", "AI", "최적화"],
-  "data-analytics": ["데이터", "분석", "시각화", "AI", "인사이트"],
-  research: ["리서치", "논문", "문서", "AI", "요약"],
-  education: ["교육", "학습", "튜터링", "AI", "퀴즈"],
-  automation: ["자동화", "워크플로우", "RPA", "AI", "연동"],
-  "no-code": ["노코드", "앱", "빌더", "AI", "자동화"],
-  "3d-gaming": ["3D", "게임", "에셋", "AI", "메타버스"],
-  business: ["비즈니스", "CRM", "영업", "AI", "분석"],
-  translation: ["번역", "다국어", "로컬라이제이션", "AI", "자동"],
-  presentation: ["프레젠테이션", "슬라이드", "피치", "AI", "자동생성"],
-  "social-media": ["소셜", "SNS", "콘텐츠", "AI", "스케줄링"],
-};
-
 function pushTool(tools, slugUsed, idRef, tool) {
   let baseSlug = slugify(tool.name) || `tool-${idRef.current}`;
   let slug = baseSlug;
@@ -331,13 +298,20 @@ function pushTool(tools, slugUsed, idRef, tool) {
   });
 }
 
-// Build full tool list from rawTools
+// Build tool list from rawTools only (no synthetic/placeholder tools).
 const tools = [];
 const slugUsed = new Set();
 const idRef = { current: 1 };
 for (const t of rawTools) {
   if (!t.website_url) {
-    console.warn(`[seed] Skipping logo_url for "${t.name}": missing website_url`);
+    console.warn(`[seed] Skipping "${t.name}": missing website_url`);
+    continue;
+  }
+  try {
+    new URL(t.website_url);
+  } catch (_) {
+    console.warn(`[seed] Skipping "${t.name}": invalid website_url`);
+    continue;
   }
   pushTool(tools, slugUsed, idRef, {
     name: t.name,
@@ -350,34 +324,6 @@ for (const t of rawTools) {
     featured: t.featured || false,
   });
 }
-
-// Expand each category to at least MIN_PER_CATEGORY (25) for 500+ total
-const countByCategory = {};
-tools.forEach((tool) => {
-  countByCategory[tool.category] = (countByCategory[tool.category] || 0) + 1;
-});
-
-CATEGORY_SLUGS.forEach((catSlug) => {
-  const current = countByCategory[catSlug] || 0;
-  const need = Math.max(0, MIN_PER_CATEGORY - current);
-  const tags = TAG_POOL[catSlug] || ["AI", "자동화", "도구"];
-  for (let i = 0; i < need; i++) {
-    const num = current + i + 1;
-    const name = `AI ${catSlug.replace(/-/g, " ")} Tool ${num}`;
-    const safeName = name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-    const website_url = `https://${safeName}.ai`;
-    pushTool(tools, slugUsed, idRef, {
-      name,
-      description: `${catSlug} 카테고리의 AI 도구입니다. 탐색과 비교에 활용하세요.`,
-      category: catSlug,
-      tags: [tags[0], tags[1], "AI"],
-      pricing: PRICING_OPTIONS[i % 3],
-      korean_support: i % 3 !== 2,
-      website_url,
-      featured: false,
-    });
-  }
-});
 
 const outDir = path.join(__dirname, "..", "data");
 if (!fs.existsSync(outDir)) {

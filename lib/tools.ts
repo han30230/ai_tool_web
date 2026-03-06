@@ -3,12 +3,29 @@ import { CATEGORIES } from "./categories";
 
 import toolsData from "../data/tools.json";
 
-const allTools: Tool[] = toolsData as Tool[];
+/** Exclude placeholder/synthetic tools (e.g. "AI audio voice Tool 13"). */
+function isPlaceholderName(name: string): boolean {
+  return /^AI\s+.+\s+Tool\s+\d+$/i.test(name.trim());
+}
+
+const allTools: Tool[] = (toolsData as Tool[]).filter(
+  (t) => t.name && !isPlaceholderName(t.name)
+);
 
 export { allTools as tools };
 
 export function getToolBySlug(slug: string): Tool | undefined {
   return allTools.find((t) => t.slug === slug);
+}
+
+/** All tool slugs (for sitemap, static paths). */
+export function getToolSlugs(): string[] {
+  return allTools.map((t) => t.slug);
+}
+
+/** Tools sorted by id desc (newest first). */
+export function getNewestTools(limit = 12): Tool[] {
+  return [...allTools].sort((a, b) => Number(b.id) - Number(a.id)).slice(0, limit);
 }
 
 export function getToolsByCategory(categorySlug: string): Tool[] {
@@ -19,6 +36,12 @@ export function getFeaturedTools(): Tool[] {
   return allTools.filter((t) => t.featured);
 }
 
+/** Total number of tools (for "전체" pill). */
+export function getTotalToolsCount(): number {
+  return allTools.length;
+}
+
+/** Category list with actual tool counts (only categories that have tools). */
 export function getCategoriesWithCount(): { slug: string; name: string; count: number }[] {
   const counts: Record<string, number> = {};
   allTools.forEach((t) => {
