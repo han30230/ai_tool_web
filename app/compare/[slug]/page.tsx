@@ -151,6 +151,8 @@ export default async function ComparePage({
         {" · "}
         <Link href={`/tools/${toolB.slug}`} className="text-primary hover:underline">{toolB.name} 상세</Link>
         {" · "}
+        <Link href={`/compare?tools=${toolA.slug},${toolB.slug}`} className="text-primary hover:underline">여러 툴로 더 비교하기</Link>
+        {" · "}
         <Link href={`/alternatives/${toolA.slug}`} className="text-primary hover:underline">{toolA.name} 대안 더 보기</Link>
       </p>
     </div>

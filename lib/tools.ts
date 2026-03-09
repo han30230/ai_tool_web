@@ -14,6 +14,36 @@ const allTools: Tool[] = (toolsData as Tool[]).filter(
 
 export { allTools as tools };
 
+function toIsoDateOnly(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+function parseDateOnly(value?: string): Date | null {
+  if (!value) return null;
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value.trim());
+  if (!m) return null;
+  const y = Number(m[1]);
+  const mo = Number(m[2]) - 1;
+  const da = Number(m[3]);
+  const dt = new Date(Date.UTC(y, mo, da));
+  return Number.isNaN(dt.getTime()) ? null : dt;
+}
+
+function daysBetweenUtc(a: Date, b: Date): number {
+  const ms = b.getTime() - a.getTime();
+  return Math.floor(ms / (1000 * 60 * 60 * 24));
+}
+
+function hashToUnitInterval(input: string): number {
+  // Stable, small hash → [0, 1)
+  let h = 2166136261;
+  for (let i = 0; i < input.length; i++) {
+    h ^= input.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return (h >>> 0) / 2 ** 32;
+}
+
 export function getToolBySlug(slug: string): Tool | undefined {
   return allTools.find((t) => t.slug === slug);
 }
@@ -34,6 +64,35 @@ export function getToolsByCategory(categorySlug: string): Tool[] {
 
 export function getFeaturedTools(): Tool[] {
   return allTools.filter((t) => t.featured);
+}
+
+/**
+ * "Trending" heuristic (no analytics available):
+ * - Favor recently updated tools (last_updated_at)
+ * - Slight boost for featured tools
+ * - Add a deterministic daily rotation to avoid feeling static
+ */
+export function getTrendingTools(limit = 12): Tool[] {
+  const now = new Date();
+  const todayUtc = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  const seed = toIsoDateOnly(todayUtc);
+
+  const scored = allTools.map((t) => {
+    const updated = parseDateOnly(t.last_updated_at) ?? parseDateOnly(t.pricing_last_updated_at);
+    const daysSince = updated ? Math.max(0, daysBetweenUtc(updated, todayUtc)) : 9999;
+
+    // Recency score: best within ~30 days, then decays.
+    const recency = Math.max(0, 30 - Math.min(30, daysSince));
+    const featuredBoost = t.featured ? 8 : 0;
+    const rotation = hashToUnitInterval(`${seed}:${t.id}:${t.slug}`) * 3; // 0..3
+
+    return { tool: t, score: recency + featuredBoost + rotation };
+  });
+
+  return scored
+    .sort((a, b) => b.score - a.score)
+    .map((x) => x.tool)
+    .slice(0, limit);
 }
 
 /** Total number of tools (for "전체" pill). */

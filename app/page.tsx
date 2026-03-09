@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { getFeaturedTools, getCategoriesWithCount, getTotalToolsCount, getNewestTools } from "@/lib/tools";
+import { getTrendingTools, getCategoriesWithCount, getTotalToolsCount, getNewestTools } from "@/lib/tools";
 import { getLatestArticles } from "@/lib/articles";
 import { fetchNewsItems, getFallbackNews } from "@/lib/news";
 import { ToolCard } from "@/components/ToolCard";
@@ -12,11 +12,10 @@ import { DataDisclaimer } from "@/components/DataDisclaimer";
 import { getBaseUrl } from "@/lib/site";
 
 export default async function HomePage() {
-  const featured = getFeaturedTools();
+  const trending = getTrendingTools(12);
   const newest = getNewestTools(8);
   const categoriesWithCount = getCategoriesWithCount();
   const totalCount = getTotalToolsCount();
-  const displayTools = featured.slice(0, 12);
   const latestArticles = getLatestArticles(6);
   let newsItems: Awaited<ReturnType<typeof fetchNewsItems>> = [];
   try {
@@ -54,7 +53,7 @@ export default async function HomePage() {
 
       <section>
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-slate-900">이번주 인기 툴</h2>
+          <h2 className="text-xl font-semibold text-slate-900">🔥 급상승 AI 툴</h2>
           <Link
             href="/tools"
             className="text-sm font-medium text-primary hover:underline"
@@ -63,11 +62,11 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {displayTools.map((tool) => (
+          {trending.slice(0, 12).map((tool) => (
             <ToolCard key={tool.id} tool={tool} />
           ))}
         </div>
-        {displayTools.length === 0 && (
+        {trending.length === 0 && (
           <p className="py-8 text-center text-slate-500">등록된 추천 툴이 없습니다.</p>
         )}
       </section>
@@ -75,7 +74,7 @@ export default async function HomePage() {
       {newest.length > 0 && (
         <section>
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-slate-900">새로 추가된 툴</h2>
+            <h2 className="text-xl font-semibold text-slate-900">🆕 신규 추가된 AI 툴</h2>
             <Link href="/tools?sort=new" className="text-sm font-medium text-primary hover:underline">전체 보기 →</Link>
           </div>
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

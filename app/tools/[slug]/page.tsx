@@ -152,6 +152,12 @@ export default async function ToolDetailPage({
               >
                 공식 사이트 방문
               </a>
+              <Link
+                href={`/compare?add=${encodeURIComponent(tool.slug)}`}
+                className="inline-flex rounded-lg border border-slate-300 bg-white px-4 py-2 font-medium text-slate-700 hover:bg-slate-50"
+              >
+                비교에 추가
+              </Link>
               <button
                 type="button"
                 className="inline-flex rounded-lg border border-slate-300 bg-white px-4 py-2 font-medium text-slate-700 hover:bg-slate-50"
@@ -286,8 +292,8 @@ export default async function ToolDetailPage({
                 <Link href={`/alternatives/${tool.slug}`} className="text-sm font-medium text-primary hover:underline">
                   {tool.name} 대안 더 보기
                 </Link>
-                <Link href="/tools" className="text-sm font-medium text-primary hover:underline">
-                  전체 비교
+                <Link href="/compare" className="text-sm font-medium text-primary hover:underline">
+                  비교 페이지
                 </Link>
               </div>
             </div>
