@@ -35,8 +35,31 @@ export function ArticleCardImage({
   const [failed, setFailed] = useState(false);
   const key = fallbackKey || src || alt || "fallback";
   const fallbackUrl = FALLBACK_IMAGES[hashToIndex(key, FALLBACK_IMAGES.length)];
-  const url = failed || !src ? fallbackUrl : src;
-  const unoptimized = url.startsWith("http") || url.startsWith("data:") || url.endsWith(".svg");
+  const isFallback = failed || !src;
+  const url = isFallback ? fallbackUrl : src;
+
+  // For fallback SVGs, use a plain <img> to avoid any SVG restrictions/optimizations.
+  if (isFallback) {
+    return (
+      <img
+        src={url}
+        alt={alt}
+        className={className}
+        loading="lazy"
+        decoding="async"
+        style={
+          fill
+            ? { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }
+            : undefined
+        }
+        onError={() => {
+          // If even a fallback fails (should be rare), rotate to another one.
+          if (!failed) setFailed(true);
+        }}
+      />
+    );
+  }
+
   return (
     <Image
       src={url}
@@ -44,7 +67,6 @@ export function ArticleCardImage({
       fill={fill}
       className={className}
       sizes={sizes}
-      unoptimized={unoptimized}
       onError={() => setFailed(true)}
     />
   );
