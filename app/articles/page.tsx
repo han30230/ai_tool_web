@@ -114,6 +114,7 @@ function ArticleCard({
       <div className="relative aspect-video w-full bg-slate-100">
         <ArticleCardImage
           src={article.cover_image}
+          fallbackKey={article.slug}
           fill
           className="object-cover transition group-hover:scale-105"
           sizes={featured ? "(max-width:1024px) 50vw, 33vw" : "33vw"}

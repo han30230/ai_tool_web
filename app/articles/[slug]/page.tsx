@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getBaseUrl } from "@/lib/site";
 import { getArticleBySlug, getCategoryName, getLatestArticles } from "@/lib/articles";
 import { Breadcrumb } from "@/components/Breadcrumb";
+import { ArticleCardImage } from "@/components/ArticleCardImage";
 
 export async function generateMetadata({
   params,
@@ -90,14 +90,13 @@ export default async function ArticleDetailPage({
             <span>{article.read_time}분 읽기</span>
           </div>
           <div className="relative mt-4 aspect-video w-full overflow-hidden rounded-xl bg-slate-100">
-            <Image
+            <ArticleCardImage
               src={article.cover_image}
-              alt=""
+              alt={article.title}
+              fallbackKey={article.slug}
               fill
               className="object-cover"
-              priority
               sizes="(max-width:1024px) 100vw, 672px"
-              unoptimized
             />
           </div>
         </header>
