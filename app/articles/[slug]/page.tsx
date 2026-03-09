@@ -32,20 +32,109 @@ export async function generateMetadata({
   };
 }
 
+function renderInline(text: string): React.ReactNode[] {
+  // Supports **bold**, *italic*, and [label](href).
+  const nodes: React.ReactNode[] = [];
+  let key = 0;
+  let i = 0;
+
+  const pushText = (t: string) => {
+    if (!t) return;
+    nodes.push(<span key={key++}>{t}</span>);
+  };
+
+  while (i < text.length) {
+    const rest = text.slice(i);
+
+    const linkMatch = rest.match(/^\[([^\]]+)\]\(([^)]+)\)/);
+    if (linkMatch) {
+      const [, label, href] = linkMatch;
+      const isInternal = href.startsWith("/") || href.startsWith(getBaseUrl());
+      nodes.push(
+        isInternal ? (
+          <Link key={key++} href={href} className="text-primary hover:underline">
+            {label}
+          </Link>
+        ) : (
+          <a key={key++} href={href} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            {label}
+          </a>
+        ),
+      );
+      i += linkMatch[0].length;
+      continue;
+    }
+
+    const boldMatch = rest.match(/^\*\*([\s\S]+?)\*\*/);
+    if (boldMatch) {
+      nodes.push(<strong key={key++}>{boldMatch[1]}</strong>);
+      i += boldMatch[0].length;
+      continue;
+    }
+
+    const italicMatch = rest.match(/^\*([^*\n]+)\*/);
+    if (italicMatch) {
+      nodes.push(<em key={key++}>{italicMatch[1]}</em>);
+      i += italicMatch[0].length;
+      continue;
+    }
+
+    pushText(text[i]);
+    i += 1;
+  }
+
+  return nodes;
+}
+
 function renderContent(content: string) {
   const lines = content.split("\n");
   const nodes: React.ReactNode[] = [];
   let key = 0;
+
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    if (line.startsWith("## ")) {
-      nodes.push(<h2 key={key++} className="mt-6 text-xl font-bold text-slate-900">{line.slice(3)}</h2>);
-    } else if (line.startsWith("### ")) {
-      nodes.push(<h3 key={key++} className="mt-4 text-lg font-semibold text-slate-800">{line.slice(4)}</h3>);
-    } else if (line.trim()) {
-      nodes.push(<p key={key++} className="mt-2 text-slate-600 leading-relaxed">{line}</p>);
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+
+    if (trimmed.startsWith("## ")) {
+      nodes.push(<h2 key={key++} className="mt-6 text-xl font-bold text-slate-900">{trimmed.slice(3)}</h2>);
+      continue;
     }
+    if (trimmed.startsWith("### ")) {
+      nodes.push(<h3 key={key++} className="mt-4 text-lg font-semibold text-slate-800">{trimmed.slice(4)}</h3>);
+      continue;
+    }
+
+    const isUl = /^[-*]\s+/.test(trimmed);
+    const isOl = /^\d+\.\s+/.test(trimmed);
+    if (isUl || isOl) {
+      const items: string[] = [];
+      let j = i;
+      for (; j < lines.length; j++) {
+        const t = lines[j].trim();
+        if (!t) break;
+        if (isUl && /^[-*]\s+/.test(t)) items.push(t.replace(/^[-*]\s+/, ""));
+        else if (isOl && /^\d+\.\s+/.test(t)) items.push(t.replace(/^\d+\.\s+/, ""));
+        else break;
+      }
+      i = j - 1;
+
+      const ListTag = isUl ? "ul" : "ol";
+      nodes.push(
+        <ListTag key={key++} className="mt-3 space-y-1 pl-5 text-slate-600">
+          {items.map((it) => (
+            <li key={it} className={isOl ? "list-decimal" : "list-disc"}>
+              {renderInline(it)}
+            </li>
+          ))}
+        </ListTag>,
+      );
+      continue;
+    }
+
+    nodes.push(<p key={key++} className="mt-2 text-slate-600 leading-relaxed">{renderInline(trimmed)}</p>);
   }
+
   return <div className="prose prose-slate max-w-none">{nodes}</div>;
 }
 

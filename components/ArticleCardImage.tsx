@@ -26,7 +26,7 @@ export function ArticleCardImage({
   sizes,
   fallbackKey,
 }: {
-  src: string;
+  src?: string;
   alt?: string;
   fill?: boolean;
   className?: string;
