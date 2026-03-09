@@ -4,12 +4,11 @@ import Image from "next/image";
 import { useState } from "react";
 
 const FALLBACK_IMAGES = [
-  "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80",
-  "https://images.unsplash.com/photo-1686191128892-cf7f8e7e8b2e?w=800&q=80",
-  "https://images.unsplash.com/photo-1676299085922-6cbedae6b698?w=800&q=80",
-  "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80",
-  "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80",
-  "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&q=80",
+  "/article-fallbacks/ai-1.svg",
+  "/article-fallbacks/ai-2.svg",
+  "/article-fallbacks/ai-3.svg",
+  "/article-fallbacks/ai-4.svg",
+  "/article-fallbacks/ai-5.svg",
 ] as const;
 
 function hashToIndex(input: string, mod: number) {
@@ -37,6 +36,7 @@ export function ArticleCardImage({
   const key = fallbackKey || src || alt || "fallback";
   const fallbackUrl = FALLBACK_IMAGES[hashToIndex(key, FALLBACK_IMAGES.length)];
   const url = failed || !src ? fallbackUrl : src;
+  const unoptimized = url.startsWith("http") || url.startsWith("data:") || url.endsWith(".svg");
   return (
     <Image
       src={url}
@@ -44,6 +44,7 @@ export function ArticleCardImage({
       fill={fill}
       className={className}
       sizes={sizes}
+      unoptimized={unoptimized}
       onError={() => setFailed(true)}
     />
   );
