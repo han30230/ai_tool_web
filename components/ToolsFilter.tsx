@@ -49,13 +49,13 @@ export function ToolsFilter({ current, categoriesWithCount }: ToolsFilterProps) 
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-4 rounded-lg border border-slate-200 bg-slate-50/50 p-4">
+    <div className="flex flex-wrap items-center gap-3 sm:gap-4 rounded-lg border border-slate-200 bg-slate-50/50 p-4">
       <div className="flex items-center gap-2">
-        <label className="text-sm font-medium text-slate-600">카테고리</label>
+        <label className="text-sm font-medium text-slate-600 shrink-0">카테고리</label>
         <select
           value={current.category || ""}
           onChange={(e) => updateParams({ category: e.target.value || undefined })}
-          className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700"
+          className="rounded-lg border border-slate-200 bg-white px-3 py-2.5 min-h-[44px] text-base text-slate-700 touch-manipulation"
         >
           <option value="">전체</option>
           {categoriesWithCount.map((c) => (
@@ -66,11 +66,11 @@ export function ToolsFilter({ current, categoriesWithCount }: ToolsFilterProps) 
         </select>
       </div>
       <div className="flex items-center gap-2">
-        <label className="text-sm font-medium text-slate-600">가격</label>
+        <label className="text-sm font-medium text-slate-600 shrink-0">가격</label>
         <select
           value={current.pricing || ""}
           onChange={(e) => updateParams({ pricing: e.target.value || undefined })}
-          className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700"
+          className="rounded-lg border border-slate-200 bg-white px-3 py-2.5 min-h-[44px] text-base text-slate-700 touch-manipulation"
         >
           {PRICING_OPTIONS.map((o) => (
             <option key={o.value || "all"} value={o.value}>
@@ -79,21 +79,21 @@ export function ToolsFilter({ current, categoriesWithCount }: ToolsFilterProps) 
           ))}
         </select>
       </div>
-      <label className="flex items-center gap-2">
+      <label className="flex items-center gap-3 min-h-[44px] cursor-pointer touch-manipulation">
         <input
           type="checkbox"
           checked={current.korean || false}
           onChange={(e) => updateParams({ korean: e.target.checked ? "1" : undefined })}
-          className="rounded border-slate-300 text-primary focus:ring-primary"
+          className="rounded border-slate-300 text-primary focus:ring-primary w-5 h-5 shrink-0"
         />
         <span className="text-sm font-medium text-slate-600">한국어 지원만</span>
       </label>
       <div className="flex items-center gap-2">
-        <label className="text-sm font-medium text-slate-600">정렬</label>
+        <label className="text-sm font-medium text-slate-600 shrink-0">정렬</label>
         <select
           value={current.sort || "featured"}
           onChange={(e) => updateParams({ sort: e.target.value })}
-          className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700"
+          className="rounded-lg border border-slate-200 bg-white px-3 py-2.5 min-h-[44px] text-base text-slate-700 touch-manipulation"
         >
           {SORT_OPTIONS.map((o) => (
             <option key={o.value} value={o.value}>

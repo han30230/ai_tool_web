@@ -12,10 +12,17 @@
   --primary-foreground: #ffffff;
 }
 
+/* Mobile-friendly: prevent zoom on focus for inputs that use font-size >= 16px */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-feature-settings: "rlig" 1, "calt" 1;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 /* Horizontal scrollbar thin */
@@ -32,4 +39,9 @@ body {
 .overflow-x-auto::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 3px;
+}
+
+/* Smooth horizontal scroll on mobile (e.g. compare table) */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
 }

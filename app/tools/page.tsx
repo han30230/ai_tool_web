@@ -55,8 +55,8 @@ export default async function ToolsPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">AI 서비스 모음</h1>
-        <p className="mt-1 text-slate-600">
+        <h1 className="text-xl font-bold text-slate-900 sm:text-2xl">AI 서비스 모음</h1>
+        <p className="mt-1 text-slate-600 text-sm sm:text-base">
           {filtered.length}개의 AI 툴을 카테고리·가격·기능으로 필터하고 비교하세요.
         </p>
       </div>

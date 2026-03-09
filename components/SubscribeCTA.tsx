@@ -4,13 +4,43 @@ import { useState } from "react";
 
 export function SubscribeCTA() {
   const [email, setEmail] = useState("");
-  const [toast, setToast] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setEmail("");
-    setToast(true);
-    setTimeout(() => setToast(false), 3000);
+    setStatus("loading");
+    setMessage("");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+      if (!res.ok || !data.ok) {
+        const err = data.error || "UNKNOWN";
+        if (err === "SUBSCRIBE_NOT_CONFIGURED") {
+          throw new Error("구독 연동이 아직 설정되지 않았습니다. (관리자: 웹훅 설정 필요)");
+        }
+        if (err === "INVALID_EMAIL") {
+          throw new Error("이메일 형식을 확인해 주세요.");
+        }
+        throw new Error("구독 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+      }
+
+      setEmail("");
+      setStatus("success");
+      setMessage("구독이 완료되었습니다. 감사합니다!");
+    } catch (err) {
+      setStatus("error");
+      setMessage(err instanceof Error ? err.message : "구독 처리 중 오류가 발생했습니다.");
+    } finally {
+      setTimeout(() => {
+        setStatus("idle");
+        setMessage("");
+      }, 4000);
+    }
   };
 
   return (
@@ -23,19 +53,26 @@ export function SubscribeCTA() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
-          className="flex-1 rounded-lg border border-slate-200 px-3 py-2 text-sm placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          className="flex-1 rounded-lg border border-slate-200 px-3 py-2.5 min-h-[44px] text-base placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           required
+          disabled={status === "loading"}
         />
         <button
           type="submit"
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark"
+          disabled={status === "loading"}
+          className="rounded-lg bg-primary px-4 py-2.5 min-h-[44px] text-sm font-medium text-white hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-60 active:opacity-90 touch-manipulation"
         >
-          구독하기
+          {status === "loading" ? "처리 중..." : "구독하기"}
         </button>
       </form>
-      {toast && (
-        <p className="mt-2 text-sm text-amber-600" role="status">
-          구독 기능 준비 중입니다. 곧 연동될 예정이에요.
+      {message && (
+        <p
+          className={`mt-2 text-sm ${
+            status === "success" ? "text-emerald-700" : status === "error" ? "text-rose-700" : "text-slate-600"
+          }`}
+          role="status"
+        >
+          {message}
         </p>
       )}
     </div>

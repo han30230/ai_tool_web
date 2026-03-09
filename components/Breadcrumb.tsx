@@ -17,7 +17,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
           <li key={i} className="flex items-center gap-x-2">
             {i > 0 && <span className="text-slate-300">/</span>}
             {item.href ? (
-              <Link href={item.href} className="hover:text-primary">
+              <Link href={item.href} className="hover:text-primary min-h-[44px] inline-flex items-center py-1 -my-1 touch-manipulation">
                 {item.label}
               </Link>
             ) : (

@@ -74,10 +74,10 @@ export function CategoryPills({ categoriesWithCount, totalCount }: CategoryPills
     <div className="flex flex-wrap gap-2">
       <Link
         href="/tools"
-        className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+        className={`rounded-full px-4 py-2.5 min-h-[44px] inline-flex items-center text-sm font-medium transition touch-manipulation ${
           !currentCategory
             ? "bg-primary text-white"
-            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+            : "bg-slate-100 text-slate-600 hover:bg-slate-200 active:bg-slate-300"
         }`}
       >
         전체
@@ -91,8 +91,8 @@ export function CategoryPills({ categoriesWithCount, totalCount }: CategoryPills
           <Link
             key={slug}
             href={`/categories/${slug}`}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-              isActive ? "bg-primary text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+            className={`rounded-full px-4 py-2.5 min-h-[44px] inline-flex items-center text-sm font-medium transition touch-manipulation ${
+              isActive ? "bg-primary text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200 active:bg-slate-300"
             }`}
           >
             {label}

@@ -103,8 +103,8 @@ export function CompareToolPage({ tools }: { tools: Tool[] }) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">AI 툴 비교</h1>
-        <p className="mt-1 text-slate-600">
+        <h1 className="text-xl font-bold text-slate-900 sm:text-2xl">AI 툴 비교</h1>
+        <p className="mt-1 text-slate-600 text-sm sm:text-base">
           비교할 툴을 여러 개 선택하면 가격/기능을 한눈에 확인할 수 있어요. (최소 3개)
         </p>
       </div>
@@ -115,7 +115,7 @@ export function CompareToolPage({ tools }: { tools: Tool[] }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="툴 이름/태그로 검색..."
-            className="w-full max-w-md rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30"
+            className="w-full max-w-md rounded-lg border border-slate-200 bg-white px-3 py-2.5 min-h-[44px] text-base outline-none focus:ring-2 focus:ring-primary/30"
           />
           <span className="text-sm text-slate-500">
             선택됨: <span className="font-semibold text-slate-900">{selectedTools.length}</span>
@@ -130,7 +130,7 @@ export function CompareToolPage({ tools }: { tools: Tool[] }) {
               el?.scrollIntoView({ behavior: "smooth", block: "start" });
             }}
             disabled={!canCompare}
-            className="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-3 min-h-[44px] text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 hover:bg-primary/90 active:opacity-90 touch-manipulation"
           >
             비교하기
           </button>
@@ -138,14 +138,14 @@ export function CompareToolPage({ tools }: { tools: Tool[] }) {
             type="button"
             onClick={shareLink}
             disabled={selectedTools.length === 0}
-            className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-slate-50"
+            className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-4 py-3 min-h-[44px] text-sm font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-slate-50 active:bg-slate-100 touch-manipulation"
           >
             링크 복사
           </button>
           <button
             type="button"
             onClick={clear}
-            className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-4 py-3 min-h-[44px] text-sm font-medium text-slate-700 hover:bg-slate-50 active:bg-slate-100 touch-manipulation"
           >
             선택 초기화
           </button>
@@ -159,13 +159,13 @@ export function CompareToolPage({ tools }: { tools: Tool[] }) {
           return (
             <label
               key={tool.id}
-              className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 shadow-sm transition-colors ${
-                checked ? "border-primary/40 bg-primary/5" : "border-slate-200 bg-white hover:bg-slate-50"
+              className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 shadow-sm transition-colors touch-manipulation ${
+                checked ? "border-primary/40 bg-primary/5" : "border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-50"
               }`}
             >
               <input
                 type="checkbox"
-                className="mt-1 h-4 w-4 accent-primary"
+                className="mt-1 h-5 w-5 shrink-0 accent-primary"
                 checked={checked}
                 onChange={() => toggle(tool.slug)}
               />
@@ -211,6 +211,7 @@ export function CompareToolPage({ tools }: { tools: Tool[] }) {
           </div>
         </div>
 
+        <p className="text-xs text-slate-500 sm:hidden">표가 넓어서 가로로 스크롤할 수 있어요.</p>
         <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
           <table className="min-w-[920px] w-full text-sm">
             <thead className="bg-slate-50">

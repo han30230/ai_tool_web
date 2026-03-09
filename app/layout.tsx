@@ -60,6 +60,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 const jsonLdWebSite = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -102,7 +108,7 @@ export default function RootLayout({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebSiteWithBase) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrgWithBase) }} />
         <Header />
-        <main className="flex-1 mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+        <main className="flex-1 mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
           {children}
         </main>
         <Footer />

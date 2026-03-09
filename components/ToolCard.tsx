@@ -19,7 +19,7 @@ export function ToolCard({ tool }: ToolCardProps) {
   return (
     <Link
       href={`/tools/${tool.slug}`}
-      className="group flex flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-primary/40 hover:shadow-lg hover:-translate-y-0.5"
+      className="group flex flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-primary/40 hover:shadow-lg hover:-translate-y-0.5 active:bg-slate-50/50 touch-manipulation min-h-[120px]"
     >
       <div className="flex items-start gap-3">
         <ToolLogo tool={tool} size={40} className="rounded-lg bg-slate-100" />
