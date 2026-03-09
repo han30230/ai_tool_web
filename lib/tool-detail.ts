@@ -139,11 +139,5 @@ export function getLastUpdatedAt(tool: Tool): string {
 }
 
 export function getPricingPlans(tool: Tool): { name: string; price: string; desc?: string }[] {
-  if (tool.pricing_plans && tool.pricing_plans.length > 0) return tool.pricing_plans;
-  if (tool.pricing === "무료") return [{ name: "Free", price: "무료", desc: "기본 기능 사용" }];
-  if (tool.pricing === "유료") return [{ name: "Pro", price: "유료", desc: "전체 기능" }];
-  return [
-    { name: "Free", price: "무료", desc: "제한적 기능" },
-    { name: "Pro", price: "유료", desc: "고급 기능" },
-  ];
+  return tool.pricing_plans && tool.pricing_plans.length > 0 ? tool.pricing_plans : [];
 }

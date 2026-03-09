@@ -65,6 +65,10 @@ export default async function ToolDetailPage({
   const shortDesc = getShortDescription(tool);
   const lastUpdated = getLastUpdatedAt(tool);
   const pricingPlans = getPricingPlans(tool);
+  const pricingUrl = tool.pricing_url || tool.website_url;
+  const pricingNote = tool.pricing_note;
+  const pricingUpdatedAt = tool.pricing_last_updated_at;
+  const startingPrice = pricingPlans.find((p) => !/무료|Free|\$0\b|₩0\b/i.test(p.price))?.price;
 
   const baseUrl = getBaseUrl();
   const jsonLd = {
@@ -114,6 +118,11 @@ export default async function ToolDetailPage({
               <span className="rounded-md bg-slate-100 px-2.5 py-1 text-sm font-medium text-slate-600">
                 {tool.pricing}
               </span>
+              {startingPrice && (
+                <span className="rounded-md bg-primary/10 px-2.5 py-1 text-sm font-semibold text-primary">
+                  {startingPrice}부터
+                </span>
+              )}
               {tool.korean_support && (
                 <span className="rounded-md bg-emerald-100 px-2.5 py-1 text-sm font-medium text-emerald-700">
                   한국어 지원
@@ -196,33 +205,48 @@ export default async function ToolDetailPage({
           <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <h2 className="text-lg font-semibold text-slate-900">Pricing</h2>
             <div className="mt-3 h-px bg-slate-200" />
-            <div className="mt-3 overflow-hidden rounded-lg border border-slate-100">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-slate-50">
-                    <th className="px-3 py-2 text-left font-medium text-slate-700">플랜</th>
-                    <th className="px-3 py-2 text-left font-medium text-slate-700">가격</th>
-                    <th className="hidden px-3 py-2 text-left font-medium text-slate-700 sm:table-cell">설명</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {pricingPlans.map((plan, i) => (
-                    <tr key={i} className="border-t border-slate-100">
-                      <td className="px-3 py-2 font-medium text-slate-800">{plan.name}</td>
-                      <td className="px-3 py-2 text-slate-600">{plan.price}</td>
-                      <td className="hidden px-3 py-2 text-slate-500 sm:table-cell">{plan.desc}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {pricingPlans.length > 0 ? (
+              <>
+                <div className="mt-3 overflow-hidden rounded-lg border border-slate-100">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-slate-50">
+                        <th className="px-3 py-2 text-left font-medium text-slate-700">플랜</th>
+                        <th className="px-3 py-2 text-left font-medium text-slate-700">가격</th>
+                        <th className="hidden px-3 py-2 text-left font-medium text-slate-700 sm:table-cell">설명</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pricingPlans.map((plan, i) => (
+                        <tr key={i} className="border-t border-slate-100">
+                          <td className="px-3 py-2 font-medium text-slate-800">{plan.name}</td>
+                          <td className="px-3 py-2 text-slate-600">{plan.price}</td>
+                          <td className="hidden px-3 py-2 text-slate-500 sm:table-cell">{plan.desc}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {(pricingUpdatedAt || pricingNote) && (
+                  <p className="mt-3 text-xs text-slate-500">
+                    {pricingUpdatedAt ? `가격 확인일: ${pricingUpdatedAt}` : null}
+                    {pricingUpdatedAt && pricingNote ? " · " : null}
+                    {pricingNote ? pricingNote : null}
+                  </p>
+                )}
+              </>
+            ) : (
+              <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+                현재 이 툴의 <span className="font-semibold">플랜별 가격 정보가 아직 정리되지 않았습니다</span>. 아래 버튼에서 공식 가격 페이지를 확인해 주세요.
+              </div>
+            )}
             <a
-              href={tool.website_url}
+              href={pricingUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-3 inline-block text-sm text-primary hover:underline"
             >
-              가격 자세히 보기 →
+              공식 가격 페이지 보기 →
             </a>
           </section>
 

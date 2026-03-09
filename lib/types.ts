@@ -4,6 +4,8 @@ export interface PricingPlanItem {
   name: string;
   price: string;
   desc?: string;
+  /** Optional plan notes, e.g. "연간 결제" / "좌석당" */
+  note?: string;
 }
 
 export interface Tool {
@@ -26,6 +28,12 @@ export interface Tool {
   screenshots?: string[];
   last_updated_at?: string;
   pricing_plans?: PricingPlanItem[];
+  /** Official pricing page (preferred over homepage for pricing). */
+  pricing_url?: string;
+  /** Pricing info last verified date (YYYY-MM-DD). */
+  pricing_last_updated_at?: string;
+  /** Extra pricing disclaimer (tax/region/limited promo). */
+  pricing_note?: string;
 }
 
 export interface CategoryInfo {
