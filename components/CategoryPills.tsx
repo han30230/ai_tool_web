@@ -71,10 +71,10 @@ export function CategoryPills({ categoriesWithCount, totalCount }: CategoryPills
   const total = totalCount ?? Object.values(countBySlug).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+    <div className="flex flex-wrap gap-2">
       <Link
         href="/tools"
-        className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition ${
+        className={`rounded-full px-4 py-2 text-sm font-medium transition ${
           !currentCategory
             ? "bg-primary text-white"
             : "bg-slate-100 text-slate-600 hover:bg-slate-200"
@@ -91,7 +91,7 @@ export function CategoryPills({ categoriesWithCount, totalCount }: CategoryPills
           <Link
             key={slug}
             href={`/categories/${slug}`}
-            className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition ${
+            className={`rounded-full px-4 py-2 text-sm font-medium transition ${
               isActive ? "bg-primary text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
             }`}
           >
