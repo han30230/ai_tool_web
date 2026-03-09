@@ -9,6 +9,39 @@ export interface NewsItem {
   category?: string;
 }
 
+function decodeHtmlEntities(input: string): string {
+  if (!input) return "";
+
+  const named: Record<string, string> = {
+    amp: "&",
+    lt: "<",
+    gt: ">",
+    quot: '"',
+    apos: "'",
+    nbsp: " ",
+  };
+
+  let s = input;
+  // Some feeds double-encode entities (e.g. &amp;#8217;). Two passes usually fixes it.
+  for (let i = 0; i < 2; i++) {
+    s = s.replace(/&(#x[0-9a-fA-F]+|#\d+|[a-zA-Z]+);/g, (m, body: string) => {
+      if (body.startsWith("#x") || body.startsWith("#X")) {
+        const code = Number.parseInt(body.slice(2), 16);
+        if (Number.isFinite(code) && code >= 0 && code <= 0x10ffff) return String.fromCodePoint(code);
+        return m;
+      }
+      if (body.startsWith("#")) {
+        const code = Number.parseInt(body.slice(1), 10);
+        if (Number.isFinite(code) && code >= 0 && code <= 0x10ffff) return String.fromCodePoint(code);
+        return m;
+      }
+      return Object.prototype.hasOwnProperty.call(named, body) ? named[body] : m;
+    });
+  }
+
+  return s;
+}
+
 /** 뉴스 카테고리 (필터용) */
 export const NEWS_CATEGORIES = [
   { slug: "openai", name: "OpenAI" },
@@ -67,10 +100,12 @@ function parseRssXml(xml: string, source: string, category: string): NewsItem[] 
   let id = 0;
   while ((match = itemRegex.exec(xml)) !== null) {
     const block = match[1];
-    const title = block.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').trim() || "";
+    const rawTitle = block.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || "";
+    const title = decodeHtmlEntities(rawTitle.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/<[^>]+>/g, "").trim());
     const link = block.match(/<link[^>]*>([\s\S]*?)<\/link>/i)?.[1]?.trim() || block.match(/<link[^>]*\/>/i)?.[0]?.match(/href="([^"]+)"/)?.[1] || "";
     const pubDate = block.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/i)?.[1]?.trim() || "";
-    const desc = block.match(/<description[^>]*>([\s\S]*?)<\/description>/i)?.[1]?.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').trim() || "";
+    const rawDesc = block.match(/<description[^>]*>([\s\S]*?)<\/description>/i)?.[1] || "";
+    const desc = decodeHtmlEntities(rawDesc.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/<[^>]+>/g, "").trim());
     if (!title || !link) continue;
     let dateStr = new Date().toISOString().slice(0, 10);
     try {
