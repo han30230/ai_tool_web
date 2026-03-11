@@ -49,6 +49,8 @@ export function Header() {
           onClick={() => setOpen(true)}
           className="md:hidden flex flex-col justify-center items-center w-11 h-11 rounded-lg border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 touch-manipulation"
           aria-label="메뉴 열기"
+          aria-expanded={open}
+          aria-controls="mobile-drawer"
         >
           <span className="sr-only">메뉴 열기</span>
           <span className="w-5 h-0.5 bg-current rounded-full mb-1.5" />
@@ -61,12 +63,13 @@ export function Header() {
       {open && (
         <>
           <div
-            className="fixed inset-0 z-40 bg-black/50 md:hidden"
+            className="fixed inset-0 z-[90] bg-black/50 md:hidden"
             aria-hidden
             onClick={() => setOpen(false)}
           />
           <div
-            className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-[min(320px,85vw)] bg-white shadow-xl md:hidden flex flex-col pt-[calc(1rem+env(safe-area-inset-top))] pb-[calc(1rem+env(safe-area-inset-bottom))]"
+            id="mobile-drawer"
+            className="fixed top-0 right-0 bottom-0 z-[100] w-full max-w-[min(360px,90vw)] bg-white shadow-xl md:hidden flex flex-col pt-[calc(1rem+env(safe-area-inset-top))] pb-[calc(1rem+env(safe-area-inset-bottom))]"
             role="dialog"
             aria-modal="true"
             aria-label="메뉴"

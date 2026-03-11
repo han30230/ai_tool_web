@@ -7,13 +7,15 @@ import { ToolLogo } from "@/components/ToolLogo";
 
 interface ToolCardProps {
   tool: Tool;
+  /** When true, logo loads with high priority (use for first row). */
+  priority?: boolean;
 }
 
 /**
  * Modern SaaS-style tool card.
  * [logo 40px] Tool name, description, tags, pricing/category badges
  */
-export function ToolCard({ tool }: ToolCardProps) {
+export function ToolCard({ tool, priority = false }: ToolCardProps) {
   const category = getCategoryBySlug(tool.category);
 
   return (
@@ -22,7 +24,7 @@ export function ToolCard({ tool }: ToolCardProps) {
       className="group flex flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-primary/40 hover:shadow-lg hover:-translate-y-0.5 active:bg-slate-50/50 touch-manipulation min-h-[120px]"
     >
       <div className="flex items-start gap-3">
-        <ToolLogo tool={tool} size={40} className="rounded-lg bg-slate-100" />
+        <ToolLogo tool={tool} size={40} className="rounded-lg bg-slate-100" priority={priority} />
         <div className="min-w-0 flex-1">
           <h3 className="font-semibold text-slate-900 group-hover:text-primary">
             {tool.name}

@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { getToolBySlug, getSimilarTools } from "@/lib/tools";
 import { getCategoryBySlug } from "@/lib/categories";
 import { getBaseUrl } from "@/lib/site";
+import { getAllArticles } from "@/lib/articles";
+import { normalizeTag } from "@/lib/tags";
 import {
   getFeatures,
   getUseCases,
@@ -29,8 +31,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const tool = getToolBySlug(slug);
   if (!tool) return { title: "툴을 찾을 수 없음" };
-  const ogImage = getFirstScreenshotOrPlaceholder(tool);
   const canonical = `${getBaseUrl()}/tools/${slug}`;
+  const ogImage = `${getBaseUrl()}/og?kind=tool&title=${encodeURIComponent(tool.name)}&subtitle=${encodeURIComponent(
+    tool.short_description || tool.description
+  )}&badge=${encodeURIComponent("AI 툴")}`;
   return {
     title: `${tool.name} 사용법·가격·대안 | AI 툴 올인원`,
     description: tool.description,
@@ -71,12 +75,23 @@ export default async function ToolDetailPage({
   const startingPrice = pricingPlans.find((p) => !/무료|Free|\$0\b|₩0\b/i.test(p.price))?.price;
 
   const baseUrl = getBaseUrl();
+  const toolPageUrl = `${baseUrl}/tools/${tool.slug}`;
+
+  const toolTagSet = new Set((tool.tags || []).map((t) => t.toLowerCase()));
+  const relatedArticles = getAllArticles()
+    .filter((a) => {
+      const titleHit = (a.title || "").toLowerCase().includes(tool.name.toLowerCase());
+      const tagHit = (a.tags || []).some((t) => toolTagSet.has(String(t).toLowerCase()));
+      return titleHit || tagHit;
+    })
+    .sort((a, b) => (b.published_at > a.published_at ? 1 : -1))
+    .slice(0, 6);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: tool.name,
     description: tool.description,
-    url: tool.website_url,
+    url: toolPageUrl,
     applicationCategory: category?.name,
     image: getFirstScreenshotOrPlaceholder(tool),
     offers: {
@@ -84,6 +99,52 @@ export default async function ToolDetailPage({
       price: tool.pricing === "무료" ? "0" : undefined,
       priceCurrency: "KRW",
     },
+  };
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `${tool.name}는 어떤 툴인가요?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: (tool.short_description || tool.description || "").split(/\n\n+/)[0]?.trim() || `${tool.name} 소개 페이지입니다.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `${tool.name}는 무료인가요?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `요금제는 \"${tool.pricing}\"입니다. 플랜별 한도·가격은 공식 가격 페이지에서 확인하세요.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `${tool.name}는 어떤 기능이 핵심인가요?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `대표 기능: ${features.slice(0, 5).join(", ")}.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `${tool.name}는 어떤 상황에서 쓰면 좋나요?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `추천 사용 사례: ${useCases.slice(0, 4).join(" / ")}.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `${tool.name} 공식 사이트는 어디인가요?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `공식 사이트: ${tool.website_url}`,
+        },
+      },
+    ],
   };
   const jsonLdBreadcrumb = {
     "@context": "https://schema.org",
@@ -96,7 +157,7 @@ export default async function ToolDetailPage({
     ],
   };
 
-  const toolUrl = `${baseUrl}/tools/${tool.slug}`;
+  const toolUrl = toolPageUrl;
   const breadcrumbItems = [
     { label: "홈", href: "/" },
     { label: "AI 서비스 모음", href: "/tools" },
@@ -110,7 +171,7 @@ export default async function ToolDetailPage({
       {/* 1. Overview (Hero) */}
       <section className="mt-4 rounded-xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
         <div className="flex flex-wrap items-start gap-4">
-          <ToolLogo tool={tool} size={80} className="rounded-xl shrink-0" />
+          <ToolLogo tool={tool} size={80} className="rounded-xl shrink-0" priority />
           <div className="min-w-0 flex-1">
             <h1 className="text-xl font-bold text-slate-900 sm:text-2xl lg:text-3xl">{tool.name}</h1>
             <p className="mt-1 text-slate-600">{shortDesc}</p>
@@ -140,6 +201,19 @@ export default async function ToolDetailPage({
                 최근 업데이트: {lastUpdated}
               </span>
             </div>
+            {tool.tags?.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {tool.tags.slice(0, 10).map((t) => (
+                  <Link
+                    key={t}
+                    href={`/tags/${encodeURIComponent(normalizeTag(String(t)))}`}
+                    className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-200"
+                  >
+                    #{t}
+                  </Link>
+                ))}
+              </div>
+            )}
             <div className="mt-4 flex flex-wrap items-center gap-4">
               <ShareButtons url={toolUrl} title={`${tool.name} | AI 툴 올인원`} description={shortDesc} />
             </div>
@@ -171,11 +245,15 @@ export default async function ToolDetailPage({
 
       <div className="mt-6 sm:mt-8 grid gap-6 sm:gap-8 lg:grid-cols-3">
         <div className="space-y-6 sm:space-y-8 lg:col-span-2">
-          {/* 1. Overview (full description) */}
+          {/* 1. Overview (full description, supports multiple paragraphs) */}
           <section className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
             <h2 className="text-lg font-semibold text-slate-900">Overview</h2>
             <div className="mt-3 h-px bg-slate-200" />
-            <p className="mt-3 text-slate-600 leading-relaxed">{tool.description}</p>
+            <div className="mt-3 space-y-3 text-slate-600 leading-relaxed">
+              {tool.description.split(/\n\n+/).map((para, i) => (
+                <p key={i}>{para.trim()}</p>
+              ))}
+            </div>
             <DataDisclaimer />
           </section>
 
@@ -284,6 +362,32 @@ export default async function ToolDetailPage({
             </div>
           </section>
 
+          {/* 5.5 Related Articles (internal links for SEO) */}
+          {relatedArticles.length > 0 && (
+            <section className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-lg font-semibold text-slate-900">관련 AI 관련 글</h2>
+                <Link href="/articles" className="text-sm font-medium text-primary hover:underline">
+                  글 전체 보기 →
+                </Link>
+              </div>
+              <div className="mt-3 h-px bg-slate-200" />
+              <p className="mt-3 text-sm text-slate-600">
+                {tool.name}와(과) 함께 보면 좋은 글을 모았습니다.
+              </p>
+              <ul className="mt-3 space-y-2">
+                {relatedArticles.map((a) => (
+                  <li key={a.id} className="flex items-baseline justify-between gap-3">
+                    <Link href={`/articles/${a.slug}`} className="font-medium text-slate-900 hover:text-primary">
+                      {a.title}
+                    </Link>
+                    <span className="shrink-0 text-xs text-slate-500">{a.published_at}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
           {/* 6. Similar Tools */}
           <section className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-2">
@@ -328,6 +432,29 @@ export default async function ToolDetailPage({
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      {relatedArticles.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              name: `${tool.name} 관련 글`,
+              itemListElement: relatedArticles.map((a, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                item: {
+                  "@type": "Article",
+                  headline: a.title,
+                  url: `${baseUrl}/articles/${a.slug}`,
+                  datePublished: a.published_at,
+                },
+              })),
+            }),
+          }}
+        />
+      )}
     </div>
   );
 }

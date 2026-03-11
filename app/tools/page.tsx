@@ -7,6 +7,8 @@ import { SearchBar } from "@/components/SearchBar";
 import { CategoryPills } from "@/components/CategoryPills";
 import { ToolsFilter } from "@/components/ToolsFilter";
 import { Pagination } from "@/components/Pagination";
+import Link from "next/link";
+import { getAllTags } from "@/lib/tags";
 
 const PAGE_SIZE = 36;
 
@@ -16,8 +18,27 @@ export const metadata: Metadata = {
     "실제 서비스 중인 AI 도구를 카테고리·가격·기능으로 필터하고 비교하세요. 챗봇, 이미지 생성, 코딩, 마케팅 등.",
   keywords: ["AI 툴", "AI 도구 목록", "챗봇", "이미지 생성", "코딩", "마케팅"],
   alternates: { canonical: `${getBaseUrl()}/tools` },
-  openGraph: { title: "AI 툴 모음 | AI 툴 올인원", description: "실제 AI 도구를 검색하고 비교하세요." },
-  twitter: { card: "summary_large_image" as const },
+  openGraph: {
+    title: "AI 툴 모음 | AI 툴 올인원",
+    description: "실제 AI 도구를 검색하고 비교하세요.",
+    url: `${getBaseUrl()}/tools`,
+    images: [
+      {
+        url: `${getBaseUrl()}/og?kind=page&title=${encodeURIComponent("AI 툴 모음")}&subtitle=${encodeURIComponent(
+          "카테고리·가격·기능으로 검색·비교"
+        )}&badge=${encodeURIComponent("Tools")}`,
+        width: 1200,
+        height: 630,
+        alt: "AI 툴 모음",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image" as const,
+    title: "AI 툴 모음 | AI 툴 올인원",
+    description: "실제 AI 도구를 검색하고 비교하세요.",
+    images: [`${getBaseUrl()}/og?kind=page&title=${encodeURIComponent("AI 툴 모음")}&subtitle=${encodeURIComponent("카테고리·가격·기능으로 검색·비교")}&badge=${encodeURIComponent("Tools")}`],
+  },
 };
 
 type SearchParams = { category?: string; pricing?: string; korean?: string; tag?: string; q?: string; sort?: string; page?: string };
@@ -51,6 +72,7 @@ export default async function ToolsPage({
   const pageTools = filtered.slice(start, start + PAGE_SIZE);
   const categoriesWithCount = getCategoriesWithCount();
   const totalCount = getTotalToolsCount();
+  const popularTags = getAllTags().slice(0, 18);
 
   return (
     <div className="space-y-6">
@@ -63,6 +85,27 @@ export default async function ToolsPage({
 
       <SearchBar placeholder="툴 이름, 태그로 검색..." />
 
+      {popularTags.length > 0 && (
+        <section className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-lg font-semibold text-slate-900">인기 태그</h2>
+            <span className="text-xs text-slate-500">툴·글 클러스터로 빠르게 탐색</span>
+          </div>
+          <div className="mt-3 h-px bg-slate-200" />
+          <div className="mt-4 flex flex-wrap gap-2">
+            {popularTags.map((t) => (
+              <Link
+                key={t.key}
+                href={`/tags/${encodeURIComponent(t.key)}`}
+                className="rounded-full bg-primary/10 px-3 py-2 text-sm font-medium text-primary hover:bg-primary/20"
+              >
+                #{t.label} <span className="ml-1 text-xs text-primary/80">({t.toolCount + t.articleCount})</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
       <Suspense fallback={<div className="h-10 animate-pulse rounded-full bg-slate-100 w-full max-w-2xl" />}>
         <CategoryPills categoriesWithCount={categoriesWithCount} totalCount={totalCount} />
       </Suspense>
@@ -73,8 +116,8 @@ export default async function ToolsPage({
       />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {pageTools.map((tool) => (
-          <ToolCard key={tool.id} tool={tool} />
+        {pageTools.map((tool, i) => (
+          <ToolCard key={tool.id} tool={tool} priority={i < 6} />
         ))}
       </div>
 
@@ -110,7 +153,7 @@ export default async function ToolsPage({
               item: {
                 "@type": "SoftwareApplication",
                 name: t.name,
-                url: t.website_url,
+                url: `${getBaseUrl()}/tools/${t.slug}`,
               },
             })),
           }),

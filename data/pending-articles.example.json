@@ -1,0 +1,13 @@
+[
+  {
+    "slug": "new-article-slug",
+    "title": "글 제목",
+    "excerpt": "목록에 보일 요약 한 줄.",
+    "content": "## 소제목\n\n본문 마크다운...",
+    "category": "usage",
+    "tags": ["태그1", "태그2"],
+    "published_at": "2026-03-10",
+    "read_time": 5,
+    "featured": false
+  }
+]

@@ -9,6 +9,7 @@ import { CategoryPills } from "@/components/CategoryPills";
 import { BusinessInfo } from "@/components/BusinessInfo";
 import { SubscribeCTA } from "@/components/SubscribeCTA";
 import { DataDisclaimer } from "@/components/DataDisclaimer";
+import { AINewsSection } from "@/components/AINewsSection";
 import { getBaseUrl } from "@/lib/site";
 
 export default async function HomePage() {
@@ -62,8 +63,8 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {trending.slice(0, 12).map((tool) => (
-            <ToolCard key={tool.id} tool={tool} />
+          {trending.slice(0, 12).map((tool, i) => (
+            <ToolCard key={tool.id} tool={tool} priority={i < 6} />
           ))}
         </div>
         {trending.length === 0 && (
@@ -78,8 +79,8 @@ export default async function HomePage() {
             <Link href="/tools?sort=new" className="text-sm font-medium text-primary hover:underline min-h-[44px] inline-flex items-center touch-manipulation">전체 보기 →</Link>
           </div>
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {newest.map((tool) => (
-              <ToolCard key={tool.id} tool={tool} />
+            {newest.map((tool, i) => (
+              <ToolCard key={tool.id} tool={tool} priority={i < 4} />
             ))}
           </div>
         </section>
@@ -119,6 +120,10 @@ export default async function HomePage() {
           </ul>
         </section>
       )}
+
+      <section>
+        <AINewsSection />
+      </section>
 
       <section>
         <SubscribeCTA />

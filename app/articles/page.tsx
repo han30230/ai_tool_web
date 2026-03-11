@@ -10,7 +10,27 @@ export const metadata: Metadata = {
   description: "AI 툴 사용법, 워크플로, 프롬프트 템플릿, 국내 사례. ChatGPT·Claude·이미지 생성 등 활용 가이드.",
   keywords: ["AI 글", "사용법", "워크플로우", "프롬프트", "국내 사례", "마케팅", "개발"],
   alternates: { canonical: `${getBaseUrl()}/articles` },
-  openGraph: { title: "AI 관련 글 | AI 툴 올인원", description: "AI 툴 사용법·워크플로·프롬프트·국내 사례.", url: `${getBaseUrl()}/articles` },
+  openGraph: {
+    title: "AI 관련 글 | AI 툴 올인원",
+    description: "AI 툴 사용법·워크플로·프롬프트·국내 사례.",
+    url: `${getBaseUrl()}/articles`,
+    images: [
+      {
+        url: `${getBaseUrl()}/og?kind=page&title=${encodeURIComponent("AI 관련 글")}&subtitle=${encodeURIComponent(
+          "사용법·워크플로·프롬프트·국내 사례"
+        )}&badge=${encodeURIComponent("Articles")}`,
+        width: 1200,
+        height: 630,
+        alt: "AI 관련 글",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image" as const,
+    title: "AI 관련 글 | AI 툴 올인원",
+    description: "사용법·워크플로·프롬프트·국내 사례까지 정리했습니다.",
+    images: [`${getBaseUrl()}/og?kind=page&title=${encodeURIComponent("AI 관련 글")}&subtitle=${encodeURIComponent("사용법·워크플로·프롬프트·국내 사례")}&badge=${encodeURIComponent("Articles")}`],
+  },
 };
 
 type Props = { searchParams?: Promise<{ category?: string }> | { category?: string } };
@@ -111,15 +131,17 @@ function ArticleCard({
       href={`/articles/${article.slug}`}
       className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:border-primary/40 hover:shadow-md"
     >
-      <div className="relative aspect-video w-full bg-slate-100">
-        <ArticleCardImage
-          src={article.cover_image}
-          fallbackKey={article.slug}
-          fill
-          className="object-cover transition group-hover:scale-105"
-          sizes={featured ? "(max-width:1024px) 50vw, 33vw" : "33vw"}
-        />
-      </div>
+      {article.cover_image ? (
+        <div className="relative aspect-video w-full bg-slate-100">
+          <ArticleCardImage
+            src={article.cover_image}
+            fallbackKey={article.slug}
+            fill
+            className="object-cover transition group-hover:scale-105"
+            sizes={featured ? "(max-width:1024px) 50vw, 33vw" : "33vw"}
+          />
+        </div>
+      ) : null}
       <div className="flex flex-1 flex-col p-4">
         <span className="text-xs font-medium text-primary">{catName}</span>
         <h3 className="mt-1 font-semibold text-slate-900 line-clamp-2 group-hover:text-primary">

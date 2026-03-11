@@ -209,12 +209,19 @@ export function getLogoUrl(tool: Tool): string {
  * 4) Local placeholder (if exists at /placeholders/tool.png)
  * Empty/invalid entries are omitted.
  */
+/** Append size to Clearbit URLs so we request smaller images (faster load). */
+function clearbitWithSize(url: string, size = 128): string {
+  const u = url.trim();
+  if (!u.startsWith("https://logo.clearbit.com/")) return u;
+  return u.includes("?") ? `${u}&size=${size}` : `${u}?size=${size}`;
+}
+
 export function getLogoUrlCandidates(tool: Tool): string[] {
   const out: string[] = [];
   const domain = getDomainForLogo(tool.website_url ?? "");
 
   if (tool.logo_url?.trim()) {
-    out.push(tool.logo_url.trim());
+    out.push(clearbitWithSize(tool.logo_url));
   }
   if (domain) {
     out.push(`https://logo.clearbit.com/${domain}?size=128`);

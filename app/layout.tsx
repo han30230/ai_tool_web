@@ -53,6 +53,17 @@ export async function generateMetadata(): Promise<Metadata> {
         "500개 이상의 AI 도구를 카테고리, 가격, 기능별로 비교하고 나에게 맞는 AI 툴을 빠르게 찾아보세요.",
       images: [ogImageAbs],
     },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
     icons: {
       icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
       apple: [{ url: "/icon.svg", type: "image/svg+xml", sizes: "180x180" }],
@@ -104,6 +115,10 @@ export default function RootLayout({
 
   return (
     <html lang="ko">
+      <head>
+        <link rel="preconnect" href="https://logo.clearbit.com" />
+        <link rel="preconnect" href="https://www.google.com" crossOrigin="anonymous" />
+      </head>
       <body className="flex min-h-screen flex-col antialiased">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebSiteWithBase) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrgWithBase) }} />

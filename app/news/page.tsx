@@ -12,6 +12,22 @@ export const metadata: Metadata = {
     title: "AI 소식 | AI 툴 올인원",
     description: "AI 업계 뉴스와 툴 업데이트를 한국어로 전달합니다.",
     url: `${getBaseUrl()}/news`,
+    images: [
+      {
+        url: `${getBaseUrl()}/og?kind=page&title=${encodeURIComponent("AI 소식")}&subtitle=${encodeURIComponent(
+          "AI 업계 뉴스·툴 업데이트·릴리즈 소식"
+        )}&badge=${encodeURIComponent("News")}`,
+        width: 1200,
+        height: 630,
+        alt: "AI 소식",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image" as const,
+    title: "AI 소식 | AI 툴 올인원",
+    description: "AI 업계 뉴스와 툴 업데이트를 한국어로 전달합니다.",
+    images: [`${getBaseUrl()}/og?kind=page&title=${encodeURIComponent("AI 소식")}&subtitle=${encodeURIComponent("AI 업계 뉴스·툴 업데이트·릴리즈 소식")}&badge=${encodeURIComponent("News")}`],
   },
 };
 

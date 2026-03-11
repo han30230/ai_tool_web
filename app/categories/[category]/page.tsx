@@ -21,11 +21,25 @@ export async function generateMetadata({
   const cat = getCategoryBySlug(category);
   if (!cat) return { title: "카테고리를 찾을 수 없음" };
   const canonical = `${getBaseUrl()}/categories/${category}`;
+  const ogImage = `${getBaseUrl()}/og?kind=category&title=${encodeURIComponent(cat.name)}&subtitle=${encodeURIComponent(
+    cat.description
+  )}&badge=${encodeURIComponent("Category")}`;
   return {
     title: `${cat.name} AI 툴 | AI 툴 올인원`,
     description: cat.description + " 카테고리의 AI 도구 목록입니다.",
     alternates: { canonical },
-    openGraph: { title: `${cat.name} AI 툴 | AI 툴 올인원`, description: cat.description, url: canonical },
+    openGraph: {
+      title: `${cat.name} AI 툴 | AI 툴 올인원`,
+      description: cat.description,
+      url: canonical,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: cat.name }],
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: `${cat.name} AI 툴 | AI 툴 올인원`,
+      description: cat.description,
+      images: [ogImage],
+    },
   };
 }
 
@@ -66,7 +80,7 @@ export default async function CategoryPage({
       item: {
         "@type": "SoftwareApplication",
         name: t.name,
-        url: t.website_url,
+        url: `${getBaseUrl()}/tools/${t.slug}`,
         applicationCategory: cat.name,
       },
     })),

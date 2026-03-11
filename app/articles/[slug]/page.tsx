@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBaseUrl } from "@/lib/site";
 import { getArticleBySlug, getCategoryName, getLatestArticles } from "@/lib/articles";
+import { normalizeTag } from "@/lib/tags";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { ArticleCardImage } from "@/components/ArticleCardImage";
 
@@ -16,6 +17,9 @@ export async function generateMetadata({
   const article = getArticleBySlug(normalizedSlug);
   if (!article) return { title: "글을 찾을 수 없음" };
   const canonical = `${getBaseUrl()}/articles/${normalizedSlug}`;
+  const ogImage = `${getBaseUrl()}/og?kind=article&title=${encodeURIComponent(article.title)}&subtitle=${encodeURIComponent(
+    article.excerpt
+  )}&badge=${encodeURIComponent("AI 관련 글")}`;
   return {
     title: article.title,
     description: article.excerpt,
@@ -26,9 +30,9 @@ export async function generateMetadata({
       url: canonical,
       type: "article",
       publishedTime: article.published_at,
-      images: article.cover_image ? [{ url: article.cover_image, alt: article.title }] : undefined,
+      images: [{ url: ogImage, alt: article.title }],
     },
-    twitter: { card: "summary_large_image" as const, title: article.title, description: article.excerpt },
+    twitter: { card: "summary_large_image" as const, title: article.title, description: article.excerpt, images: [ogImage] },
   };
 }
 
@@ -155,6 +159,16 @@ export default async function ArticleDetailPage({
     { label: "AI 관련 글", href: "/articles" },
     { label: article.title },
   ];
+  const baseUrl = getBaseUrl();
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "홈", item: baseUrl },
+      { "@type": "ListItem", position: 2, name: "AI 관련 글", item: `${baseUrl}/articles` },
+      { "@type": "ListItem", position: 3, name: article.title, item: `${baseUrl}/articles/${article.slug}` },
+    ],
+  };
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -162,7 +176,9 @@ export default async function ArticleDetailPage({
     headline: article.title,
     description: article.excerpt,
     datePublished: article.published_at,
-    image: article.cover_image,
+    dateModified: article.published_at,
+    url: `${getBaseUrl()}/articles/${article.slug}`,
+    image: article.cover_image || `${getBaseUrl()}/og?kind=article&title=${encodeURIComponent(article.title)}&subtitle=${encodeURIComponent(article.excerpt)}&badge=${encodeURIComponent("AI 관련 글")}`,
     author: { "@type": "Organization", name: "AI 툴 올인원" },
     publisher: { "@type": "Organization", name: "AI 툴 올인원", url: getBaseUrl() },
   };
@@ -178,16 +194,18 @@ export default async function ArticleDetailPage({
             <time dateTime={article.published_at}>{article.published_at}</time>
             <span>{article.read_time}분 읽기</span>
           </div>
-          <div className="relative mt-4 aspect-video w-full overflow-hidden rounded-xl bg-slate-100">
-            <ArticleCardImage
-              src={article.cover_image}
-              alt={article.title}
-              fallbackKey={article.slug}
-              fill
-              className="object-cover"
-              sizes="(max-width:1024px) 100vw, 672px"
-            />
-          </div>
+          {article.cover_image ? (
+            <div className="relative mt-4 aspect-video w-full overflow-hidden rounded-xl bg-slate-100">
+              <ArticleCardImage
+                src={article.cover_image}
+                alt={article.title}
+                fallbackKey={article.slug}
+                fill
+                className="object-cover"
+                sizes="(max-width:1024px) 100vw, 672px"
+              />
+            </div>
+          ) : null}
         </header>
         <div className="mt-6">{renderContent(article.content)}</div>
         {article.tags.length > 0 && (
@@ -198,6 +216,33 @@ export default async function ArticleDetailPage({
               </Link>
             ))}
           </div>
+        )}
+
+        {article.tags.length > 0 && (
+          <section className="mt-8 rounded-xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
+            <h2 className="text-lg font-semibold text-slate-900">관련 툴 바로 찾기</h2>
+            <div className="mt-3 h-px bg-slate-200" />
+            <p className="mt-3 text-sm text-slate-600">
+              이 글의 태그로 툴 목록을 바로 필터링할 수 있어요.
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {article.tags.slice(0, 10).map((t) => (
+                <Link
+                  key={t}
+                  href={`/tags/${encodeURIComponent(normalizeTag(String(t)))}`}
+                  className="rounded-full bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary hover:bg-primary/20"
+                >
+                  #{t} 툴 보기 →
+                </Link>
+              ))}
+              <Link
+                href="/tools"
+                className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-200"
+              >
+                전체 툴 보기 →
+              </Link>
+            </div>
+          </section>
         )}
       </article>
 
@@ -216,6 +261,7 @@ export default async function ArticleDetailPage({
       )}
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     </div>
   );
 }

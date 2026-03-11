@@ -79,7 +79,7 @@ export default async function ComparePage({
       <div className="grid gap-6 md:grid-cols-2">
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-3">
-            <ToolLogo tool={toolA} size={48} className="rounded-lg" />
+            <ToolLogo tool={toolA} size={48} className="rounded-lg" priority />
             <div>
               <h2 className="text-lg font-semibold text-slate-900">{toolA.name}</h2>
               {catA && <span className="text-sm text-slate-500">{catA.name}</span>}
@@ -113,7 +113,7 @@ export default async function ComparePage({
 
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-3">
-            <ToolLogo tool={toolB} size={48} className="rounded-lg" />
+            <ToolLogo tool={toolB} size={48} className="rounded-lg" priority />
             <div>
               <h2 className="text-lg font-semibold text-slate-900">{toolB.name}</h2>
               {catB && <span className="text-sm text-slate-500">{catB.name}</span>}

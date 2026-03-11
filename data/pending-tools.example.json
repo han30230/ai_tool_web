@@ -1,0 +1,13 @@
+[
+  {
+    "name": "새 AI 툴 이름",
+    "slug": "new-ai-tool",
+    "description": "한 줄 설명.",
+    "category": "chatbot-llm",
+    "tags": ["태그1", "태그2"],
+    "pricing": "무료+유료",
+    "korean_support": true,
+    "website_url": "https://example.com",
+    "featured": false
+  }
+]

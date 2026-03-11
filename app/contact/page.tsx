@@ -11,7 +11,7 @@ export default function ContactPage() {
     <div className="max-w-2xl space-y-6">
       <h1 className="text-2xl font-bold text-slate-900">문의</h1>
       <p className="text-slate-600">
-        제휴·광고·툴 제출·일반 문의는 아래 이메일로 보내 주세요. 폼 연동은 준비 중입니다.
+        제휴·광고·툴 제출·일반 문의는 아래 이메일로 보내 주세요.
       </p>
       <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
         <p className="text-sm font-medium text-slate-700">이메일</p>
