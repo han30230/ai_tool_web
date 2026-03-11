@@ -224,8 +224,10 @@ export function getLogoUrlCandidates(tool: Tool): string[] {
     out.push(clearbitWithSize(tool.logo_url));
   }
   if (domain) {
-    out.push(`https://logo.clearbit.com/${domain}?size=128`);
+    // Google favicon is usually faster/more reliable than Clearbit on mobile.
+    out.push(`https://www.google.com/s2/favicons?domain=${domain}&sz=64`);
     out.push(`https://www.google.com/s2/favicons?domain=${domain}&sz=128`);
+    out.push(`https://logo.clearbit.com/${domain}?size=128`);
   }
 
   return out;

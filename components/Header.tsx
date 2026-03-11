@@ -85,7 +85,7 @@ export function Header() {
                 <span className="text-2xl leading-none">&times;</span>
               </button>
             </div>
-            <nav className="flex flex-col px-2 pt-4 overflow-y-auto">
+            <nav className="flex flex-1 min-h-0 flex-col gap-1 px-2 pt-4 overflow-y-auto">
               {nav.map((item) => (
                 <Link
                   key={item.href}
