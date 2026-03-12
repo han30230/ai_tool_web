@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import type { Tool } from "@/lib/types";
 import { getCategoryBySlug } from "@/lib/categories";
 import { ToolLogo } from "@/components/ToolLogo";

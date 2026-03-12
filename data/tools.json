@@ -16,7 +16,7 @@
     "korean_support": true,
     "website_url": "https://chat.openai.com",
     "pricing_url": "https://openai.com/pricing/",
-    "pricing_last_updated_at": "2026-03-09",
+    "pricing_last_updated_at": "2026-03-12",
     "pricing_note": "공식 가격(USD) 기준. 세금/환율/프로모션에 따라 달라질 수 있습니다.",
     "pricing_plans": [
       {
@@ -102,38 +102,35 @@
     "korean_support": true,
     "website_url": "https://claude.ai",
     "pricing_url": "https://claude.com/pricing",
-    "pricing_last_updated_at": "2026-03-09",
-    "pricing_note": "공식 가격(USD) 기준. 세금/환율/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
     "pricing_plans": [
       {
+        "name": "Plan",
+        "price": "$0"
+      },
+      {
         "name": "Free",
-        "price": "$0",
-        "desc": "기본 사용(제한)"
+        "price": "Free"
       },
       {
-        "name": "Pro",
-        "price": "$20/월",
-        "desc": "개인용(월 결제). 연 결제 시 $200/년(월 $17)"
+        "name": "Plan",
+        "price": "$17",
+        "desc": "$17Per month with annual subscription discount ($200 billed up front). $20 if billed monthly."
       },
       {
-        "name": "Max",
-        "price": "월 $100부터",
-        "desc": "개인용 고급(사용량 옵션에 따라 상이)"
+        "name": "Plan",
+        "price": "$200",
+        "desc": "Per month with annual subscription discount ($200 billed up front). $20 if billed monthly."
       },
       {
-        "name": "Team (Standard seat)",
-        "price": "$25/좌석/월",
-        "desc": "팀용(월 결제). 연 결제 시 $20/좌석/월"
+        "name": "Plan",
+        "price": "$100"
       },
       {
-        "name": "Team (Premium seat)",
-        "price": "$125/좌석/월",
-        "desc": "팀용 고급(월 결제). 연 결제 시 $100/좌석/월"
-      },
-      {
-        "name": "Enterprise",
-        "price": "문의",
-        "desc": "엔터프라이즈(보안/컴플라이언스)"
+        "name": "Standard",
+        "price": "$20",
+        "desc": "Standard seatAll Claude features, plus more usage than Pro*$20Per seat / month if billed annually. $25 if billed monthly"
       }
     ],
     "logo_url": "https://logo.clearbit.com/claude.ai",
@@ -187,31 +184,10 @@
     "pricing": "무료+유료",
     "korean_support": true,
     "website_url": "https://gemini.google.com",
-    "pricing_url": "https://gemini.google/subscriptions",
-    "pricing_last_updated_at": "2026-03-09",
-    "pricing_note": "미국(USD) 기준. 국가/프로모션/세금에 따라 달라질 수 있습니다.",
-    "pricing_plans": [
-      {
-        "name": "Free",
-        "price": "$0/월",
-        "desc": "기본 사용(제한)"
-      },
-      {
-        "name": "Google AI Plus",
-        "price": "$7.99/월",
-        "desc": "향상된 기능/크레딧"
-      },
-      {
-        "name": "Google AI Pro",
-        "price": "$19.99/월",
-        "desc": "상위 한도/기능"
-      },
-      {
-        "name": "Google AI Ultra",
-        "price": "$249.99/월",
-        "desc": "최상위 한도/기능"
-      }
-    ],
+    "pricing_url": "https://gemini.google.com/",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(추출 실패) — 가격 페이지 링크를 확인해 주세요.",
+    "pricing_plans": [],
     "logo_url": "https://logo.clearbit.com/google.com",
     "featured": true,
     "features": [
@@ -264,7 +240,7 @@
     "korean_support": true,
     "website_url": "https://perplexity.ai",
     "pricing_url": "https://www.perplexity.ai/enterprise/pricing",
-    "pricing_last_updated_at": "2026-03-09",
+    "pricing_last_updated_at": "2026-03-12",
     "pricing_note": "공식 가격(USD) 기준. 개인/팀/엔터프라이즈 요금과 결제 주기(월/연)에 따라 달라질 수 있습니다.",
     "pricing_plans": [
       {
@@ -373,7 +349,11 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_url": "https://copilot.microsoft.com/",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(추출 실패) — 가격 페이지 링크를 확인해 주세요.",
+    "pricing_plans": []
   },
   {
     "id": "6",
@@ -1422,7 +1402,9 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_plans": []
   },
   {
     "id": "27",
@@ -1472,7 +1454,9 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_plans": []
   },
   {
     "id": "28",
@@ -1485,7 +1469,7 @@
       "이미지",
       "오픈소스"
     ],
-    "pricing": "무료+유료",
+    "pricing": "무료",
     "korean_support": false,
     "website_url": "https://stability.ai",
     "logo_url": "https://logo.clearbit.com/stability.ai",
@@ -1522,6 +1506,15 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://stability.ai/",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      }
     ]
   },
   {
@@ -1572,7 +1565,9 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_plans": []
   },
   {
     "id": "30",
@@ -1623,7 +1618,9 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_plans": []
   },
   {
     "id": "31",
@@ -2288,7 +2285,7 @@
       "편집",
       "생성"
     ],
-    "pricing": "유료",
+    "pricing": "무료+유료",
     "korean_support": false,
     "website_url": "https://runwayml.com",
     "logo_url": "https://logo.clearbit.com/runwayml.com",
@@ -2324,6 +2321,36 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://runwayml.com/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Plan",
+        "price": "$0",
+        "desc": "$0per editor per monthfree foreverIncludes 125 credits (one time)125 credits = 25s of Gen-4 Turbo or Gen-3 Alpha Turbo"
+      },
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "Plan",
+        "price": "$12"
+      },
+      {
+        "name": "Plan",
+        "price": "$144"
+      },
+      {
+        "name": "Free",
+        "price": "Free"
+      },
+      {
+        "name": "Plan",
+        "price": "$28"
+      }
     ]
   },
   {
@@ -2374,6 +2401,27 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://pika.art/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Plan",
+        "price": "$0"
+      },
+      {
+        "name": "Plan",
+        "price": "$8/ mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$28/ mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$76/ mo"
+      }
     ]
   },
   {
@@ -2388,7 +2436,7 @@
       "아바타",
       "교육"
     ],
-    "pricing": "유료",
+    "pricing": "무료+유료",
     "korean_support": true,
     "website_url": "https://synthesia.io",
     "logo_url": "https://logo.clearbit.com/synthesia.io",
@@ -2425,6 +2473,39 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://www.synthesia.io/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Plan",
+        "price": "$18/mo"
+      },
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "Starter",
+        "price": "$29/mo",
+        "desc": "Starter$29/moCreate AI videos with your own Personal AvatarBilled monthly. Pay yearlyGet startedBilled monthly. Pay year"
+      },
+      {
+        "name": "Plan",
+        "price": "$29/mo",
+        "desc": "$29/moCreate AI videos with your own Personal AvatarBilled monthly. Pay yearly"
+      },
+      {
+        "name": "Plan",
+        "price": "$89/mo",
+        "desc": "Creator$89/moProduce AI videos regularly with your teamBilled monthly. Pay yearlyGet startedBilled monthly. Pay yearly"
+      },
+      {
+        "name": "Plan",
+        "price": "$0/mo",
+        "desc": "WorkspacesBasic$0/motry for freeGet startedStarter$29/mobilled monthlyGet startedCreator$89/mobilled monthlyGet startedE"
+      }
     ]
   },
   {
@@ -2928,6 +3009,38 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://elevenlabs.io/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Free",
+        "price": "$0",
+        "desc": "Free$0per monthBuild for freeText to SpeechSpeech to TextSound EffectsVoice DesignMusicProductionsImage & Video3 Project"
+      },
+      {
+        "name": "Plan",
+        "price": "$0"
+      },
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "Starter",
+        "price": "$5",
+        "desc": "Starter$5per monthChoose StarterEverything in free, plusCommercial LicenseInstant Voice Cloning20 Projects in StudioMusi"
+      },
+      {
+        "name": "Plan",
+        "price": "$5"
+      },
+      {
+        "name": "Starter",
+        "price": "$22",
+        "desc": "CreatorPopular$22 First month 50% off$11per monthChoose CreatorEverything in Starter, plusProfessional Voice Cloning192k"
+      }
     ]
   },
   {
@@ -3427,6 +3540,37 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://www.notion.com/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "Free",
+        "price": "Free",
+        "desc": "One tool for your whole company.Free for teams to try.Trusted by teams at"
+      },
+      {
+        "name": "Plan",
+        "price": "₩0"
+      },
+      {
+        "name": "Plan",
+        "price": "₩14,00"
+      },
+      {
+        "name": "Plan",
+        "price": "₩30,00"
+      },
+      {
+        "name": "Free",
+        "price": "₩0",
+        "desc": "Free₩0 per seat/monthSign upPlus₩14,000 per seat/monthGet startedBusiness₩30,000 per seat/monthGet startedEnterpriseCont"
+      }
     ]
   },
   {
@@ -3478,6 +3622,37 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://www.grammarly.com/plans",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Free",
+        "price": "$0",
+        "desc": "Free$0USD/ monthCreate accountPro$12USDTry for freeEmail reminder 2 days before trial ends.Start 7-Day TrialEnterpriseCo"
+      },
+      {
+        "name": "Plan",
+        "price": "$0"
+      },
+      {
+        "name": "Pro",
+        "price": "$12",
+        "desc": "Pro$12USDTry for freeEmail reminder 2 days before trial ends.Start 7-Day Trial"
+      },
+      {
+        "name": "Plan",
+        "price": "$12"
+      },
+      {
+        "name": "free",
+        "price": "$12"
+      },
+      {
+        "name": "free",
+        "price": "free"
+      }
     ]
   },
   {
@@ -4175,6 +4350,37 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://www.notion.com/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "Free",
+        "price": "Free",
+        "desc": "One tool for your whole company.Free for teams to try.Trusted by teams at"
+      },
+      {
+        "name": "Plan",
+        "price": "₩0"
+      },
+      {
+        "name": "Plan",
+        "price": "₩14,00"
+      },
+      {
+        "name": "Plan",
+        "price": "₩30,00"
+      },
+      {
+        "name": "Free",
+        "price": "₩0",
+        "desc": "Free₩0 per seat/monthSign upPlus₩14,000 per seat/monthGet startedBusiness₩30,000 per seat/monthGet startedEnterpriseCont"
+      }
     ]
   },
   {
@@ -4276,6 +4482,38 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://otter.ai/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "Plan",
+        "price": "$16.99"
+      },
+      {
+        "name": "Plan",
+        "price": "$30",
+        "desc": "BusinessBest ValueFor medium-sized teams$30 $24/user/month20% off for 3 monthsBuy now"
+      },
+      {
+        "name": "Plan",
+        "price": "$8.33",
+        "desc": "ProFor individuals and small teams$8.33/user/monthsave 51%Buy now"
+      },
+      {
+        "name": "Plan",
+        "price": "$19.99",
+        "desc": "BusinessBest ValueFor medium-sized teams$19.99/user/monthsave 33%Buy now"
+      },
+      {
+        "name": "Pro",
+        "price": "$8.33"
+      }
     ]
   },
   {
@@ -4775,6 +5013,40 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://cursor.com/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Pro",
+        "price": "$20 / mo",
+        "desc": "Pro$20 / mo.Everything in Hobby, plus:✓ Extended limits on Agent✓ Unlimited Tab completions✓ Cloud Agents✓ Maximum conte"
+      },
+      {
+        "name": "Pro",
+        "price": "$60 / mo",
+        "desc": "Pro+Recommended$60 / mo.Everything in Pro, plus:✓ 3x usage on all OpenAI, Claude, Gemini modelsGet Pro+"
+      },
+      {
+        "name": "Pro",
+        "price": "$200 / mo",
+        "desc": "Ultra$200 / mo.Everything in Pro, plus:✓ 20x usage on all OpenAI, Claude, Gemini models✓ Priority access to new features"
+      },
+      {
+        "name": "Free",
+        "price": "$0",
+        "desc": "Free$0Includes:✓ Limited code reviews each month✓ GitHub integrationTry Bugbot"
+      },
+      {
+        "name": "Pro",
+        "price": "$40",
+        "desc": "Pro$40 / user / mo.Everything in Free, plus:✓ 14 day individual trial✓ Unlimited reviews on up to 200 PRs/mo✓ Access to "
+      },
+      {
+        "name": "Free",
+        "price": "Free"
+      }
     ]
   },
   {
@@ -4788,7 +5060,7 @@
       "자동완성",
       "GitHub"
     ],
-    "pricing": "유료",
+    "pricing": "무료+유료",
     "korean_support": false,
     "website_url": "https://github.com/features/copilot",
     "logo_url": "https://logo.clearbit.com/github.com",
@@ -4824,6 +5096,38 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://github.com/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free",
+        "desc": "We get it, there's a lot you can do with GitHub. That’s why we've packed all of it into a single risk-free trial that in"
+      },
+      {
+        "name": "Free",
+        "price": "$ 0",
+        "desc": "Free The basics for individuals and organizations $ 0 USD per month $ 0 USD per month forever Join for free"
+      },
+      {
+        "name": "Plan",
+        "price": "$ 0"
+      },
+      {
+        "name": "Free",
+        "price": "Free"
+      },
+      {
+        "name": "Team",
+        "price": "$ 4",
+        "desc": "Team Advanced collaboration for individuals and organizations $ 4 USD per user/month $ 4 USD per user/month for the firs"
+      },
+      {
+        "name": "Plan",
+        "price": "$ 4"
+      }
     ]
   },
   {
@@ -5522,6 +5826,37 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://www.figma.com/pricing/",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "Plan",
+        "price": "$16/mo",
+        "desc": "Full seat$16/mo+ 3,000 AI credits/moDev seat$12/mo+ 500 AI credits/moCollab seat$3/mo+ 500 AI credits/mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$12/mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$3/mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$55/mo",
+        "desc": "Full seat$55/mo+ 3,500 AI credits/moDev seat$25/mo+ 500 AI credits/moCollab seat$5/mo+ 500 AI credits/mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$25/mo"
+      }
     ]
   },
   {
@@ -5984,7 +6319,7 @@
       "마케팅",
       "콘텐츠"
     ],
-    "pricing": "유료",
+    "pricing": "무료+유료",
     "korean_support": false,
     "website_url": "https://jasper.ai",
     "logo_url": "https://logo.clearbit.com/jasper.ai",
@@ -6020,6 +6355,25 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://www.jasper.ai/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Free",
+        "price": "Free"
+      },
+      {
+        "name": "free",
+        "price": "free",
+        "desc": "Start a free trialStart a free trialStart a free trialGet a DemoGet a DemoGet a Demo"
+      },
+      {
+        "name": "Pro",
+        "price": "$59/mo",
+        "desc": "Pro: $59/month billed yearly or $69/month billed monthly (cancel anytime). Includes advanced AI features to create conte"
+      }
     ]
   },
   {
@@ -6478,7 +6832,7 @@
       "키워드",
       "콘텐츠"
     ],
-    "pricing": "유료",
+    "pricing": "무료+유료",
     "korean_support": false,
     "website_url": "https://surferseo.com",
     "logo_url": "https://logo.clearbit.com/surferseo.com",
@@ -6514,6 +6868,36 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://surferseo.com/pricing/",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Free",
+        "price": "Free",
+        "desc": "Free ToolsChrome ExtensionAI Writing ToolsAI DetectorAI Humanizer"
+      },
+      {
+        "name": "team",
+        "price": "$240",
+        "desc": "Standard99USDper monthBilled yearlySave $240Align your team with a unified workflow and start growing your visibility in"
+      },
+      {
+        "name": "Pro",
+        "price": "$444",
+        "desc": "Pro182USDper monthBilled yearlySave $444Secure your authority, fix technical conflicts, and manage AI perception at scal"
+      },
+      {
+        "name": "Plan",
+        "price": "$720",
+        "desc": "Peace of Mind299USDper monthBilled yearlySave $720Dominate the market with uncapped optimization, API access, and VIP su"
+      },
+      {
+        "name": "Plan",
+        "price": "$120",
+        "desc": "Discovery49USDper monthBilled yearlySave $120Draft and optimize content to establish a baseline presence in Google and A"
+      }
     ]
   },
   {
@@ -7008,7 +7392,9 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_plans": []
   },
   {
     "id": "139",
@@ -7367,7 +7753,7 @@
       "논문",
       "리서치"
     ],
-    "pricing": "무료+유료",
+    "pricing": "무료",
     "korean_support": false,
     "website_url": "https://elicit.org",
     "logo_url": "https://logo.clearbit.com/elicit.org",
@@ -7404,6 +7790,16 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://elicit.com/",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free",
+        "desc": "FAQHow do you rank sources or determine quality?Is Elicit free?What data sources do you have access to?Who is Elicit bui"
+      }
     ]
   },
   {
@@ -7652,7 +8048,9 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_plans": []
   },
   {
     "id": "152",
@@ -7803,7 +8201,11 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_url": "https://www.khanacademy.org/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(추출 실패) — 가격 페이지 링크를 확인해 주세요.",
+    "pricing_plans": []
   },
   {
     "id": "155",
@@ -8201,6 +8603,36 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://zapier.com/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free",
+        "desc": "How to use Zapier MCPConnect AI to thousands of apps—code-free"
+      },
+      {
+        "name": "Free",
+        "price": "Free"
+      },
+      {
+        "name": "Plan",
+        "price": "$19.99 /mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$69 /mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$33.33 /mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$13.33 /mo"
+      }
     ]
   },
   {
@@ -8599,7 +9031,11 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_url": "https://bubble.io/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(추출 실패) — 가격 페이지 링크를 확인해 주세요.",
+    "pricing_plans": []
   },
   {
     "id": "171",
@@ -8898,6 +9334,38 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://lumalabs.ai/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free",
+        "desc": "Plans & PricingMonthlyYearlyAll Luma plans come with free trial creditsSave up to 20% with yearly"
+      },
+      {
+        "name": "Plus",
+        "price": "$30/mo",
+        "desc": "Plus$30/month$300 billed yearlyTry for freeLuma and third-party image and video modelsEdit access for guest collaborator"
+      },
+      {
+        "name": "Plan",
+        "price": "$30/mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$300"
+      },
+      {
+        "name": "Pro",
+        "price": "$90/mo",
+        "desc": "Pro$90/month$900 billed yearlyTry for freeEverything in Plus, with:4x usage with the Luma Agents"
+      },
+      {
+        "name": "Plan",
+        "price": "$90/mo"
+      }
     ]
   },
   {
@@ -9159,7 +9627,7 @@
       "영업",
       "분석"
     ],
-    "pricing": "유료",
+    "pricing": "무료",
     "korean_support": false,
     "website_url": "https://gong.io",
     "logo_url": "https://logo.clearbit.com/gong.io",
@@ -9195,6 +9663,15 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://www.gong.io/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      }
     ]
   },
   {
@@ -9454,7 +9931,7 @@
       "번역",
       "문서"
     ],
-    "pricing": "무료+유료",
+    "pricing": "무료",
     "korean_support": true,
     "website_url": "https://deepl.com",
     "logo_url": "https://logo.clearbit.com/deepl.com",
@@ -9491,6 +9968,29 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://www.deepl.com/en",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "pro",
+        "price": "free",
+        "desc": "Read our quick‒start guide and get started in minutesConnect with our community for pro tips and supportGive it a go you"
+      },
+      {
+        "name": "business",
+        "price": "free",
+        "desc": "Ready to transform your business communication with DeepL?Start free trialContact Sales"
+      },
+      {
+        "name": "Free",
+        "price": "Free"
+      }
     ]
   },
   {
@@ -9790,7 +10290,11 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_plans": [],
+    "pricing_url": "https://gamma.app/",
+    "pricing_note": "가격 정보 자동 수집(추출 실패) — 가격 페이지 링크를 확인해 주세요."
   },
   {
     "id": "195",
@@ -10089,6 +10593,36 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://buffer.com/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Free",
+        "price": "Free",
+        "desc": "Free ToolsEasy-to-use tools to grow your presence across social media"
+      },
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "Plan",
+        "price": "$5 /mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$60"
+      },
+      {
+        "name": "Plan",
+        "price": "$10 /mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$120"
+      }
     ]
   },
   {
@@ -10488,6 +11022,38 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://v0.app/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Free",
+        "price": "$0/mo",
+        "desc": "Free$0/month$5 of included monthly creditsDeploy apps to VercelEdit visually with Design ModeSync with GitHub7 message/d"
+      },
+      {
+        "name": "Plan",
+        "price": "$0/mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$5",
+        "desc": "$5 of included monthly creditsDeploy apps to VercelEdit visually with Design ModeSync with GitHub7 message/day limit"
+      },
+      {
+        "name": "Plan",
+        "price": "$20/mo"
+      },
+      {
+        "name": "free",
+        "price": "$20",
+        "desc": "$20 of included monthly credits$2 of free daily credits on loginPurchase additional credits outside of your monthly usag"
+      },
+      {
+        "name": "Plan",
+        "price": "$20"
+      }
     ]
   },
   {
@@ -10538,6 +11104,36 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://bolt.new/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "Free",
+        "price": "$0"
+      },
+      {
+        "name": "Pro",
+        "price": "$25"
+      },
+      {
+        "name": "Plan",
+        "price": "$25"
+      },
+      {
+        "name": "Plan",
+        "price": "$30"
+      },
+      {
+        "name": "Free",
+        "price": "Free",
+        "desc": "Free plans have a 300,000 token daily limit and 1 million token monthly limit."
+      }
     ]
   },
   {
@@ -10638,7 +11234,11 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_url": "https://klingai.com/global/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(추출 실패) — 가격 페이지 링크를 확인해 주세요.",
+    "pricing_plans": []
   },
   {
     "id": "212",
@@ -10687,7 +11287,11 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_url": "https://cognition.ai/",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(추출 실패) — 가격 페이지 링크를 확인해 주세요.",
+    "pricing_plans": []
   },
   {
     "id": "213",
@@ -10751,7 +11355,7 @@
       "문서",
       "요약"
     ],
-    "pricing": "무료+유료",
+    "pricing": "무료",
     "korean_support": true,
     "website_url": "https://chatpdf.com",
     "featured": false,
@@ -10787,7 +11391,16 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_url": "https://www.chatpdf.com/",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      }
+    ],
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다."
   },
   {
     "id": "215",
@@ -10837,6 +11450,39 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://www.humata.ai/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Free",
+        "price": "Free",
+        "desc": "Humata PricingPricingFind the perfect planSimple, transparent pricing that grows with you. Free to start and cheap to sc"
+      },
+      {
+        "name": "Free",
+        "price": "$0",
+        "desc": "Free$0Basic features for up to 60 free pages of use.Get Started"
+      },
+      {
+        "name": "free",
+        "price": "$0"
+      },
+      {
+        "name": "Basic",
+        "price": "free"
+      },
+      {
+        "name": "Plan",
+        "price": "$199/ mo",
+        "desc": "Student$199/ monthAcademic rate only for customers with verified @edu email accountsGet Started"
+      },
+      {
+        "name": "Plan",
+        "price": "$999/ mo",
+        "desc": "ExpertPopular$999/ monthModerate usage for small professional teams up to three (3) people.Get Started"
+      }
     ]
   },
   {
@@ -10935,7 +11581,9 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_plans": []
   },
   {
     "id": "218",
@@ -10985,6 +11633,37 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://www.framer.com/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "Plan",
+        "price": "$10"
+      },
+      {
+        "name": "Free",
+        "price": "Free",
+        "desc": "Free custom domainConnect your own domainUse your own domainAI-powered design toolsFast and secure hostingBuilt-in SEO"
+      },
+      {
+        "name": "free",
+        "price": "$20 / mo",
+        "desc": "Additional editors are Additional editors: $20 / month,/mo.and viewers are free. Learn moreViewers are free. Learn more"
+      },
+      {
+        "name": "Plan",
+        "price": "$20 / mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$30"
+      }
     ]
   },
   {
@@ -11035,6 +11714,38 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://10web.io/pricing-platform/",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Free",
+        "price": "Free",
+        "desc": "Welcome Back! Generate your website with AI – % OFF & Free Domain!"
+      },
+      {
+        "name": "Starter",
+        "price": "$10",
+        "desc": "AI Starter For simple websites $10 $20 /mo $20 monthly price Billed monthly Get Started for FreeStart or Buy Now or Buy "
+      },
+      {
+        "name": "Plan",
+        "price": "$10"
+      },
+      {
+        "name": "Plan",
+        "price": "$20"
+      },
+      {
+        "name": "Premium",
+        "price": "$15",
+        "desc": "AI Premium For professional websites $15 $30 /mo $30 monthly price Billed monthly Get Started for FreeStart or Buy Now o"
+      },
+      {
+        "name": "Plan",
+        "price": "$15"
+      }
     ]
   },
   {
@@ -11085,6 +11796,37 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://www.fathom.ai/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "FREE",
+        "price": "FREE"
+      },
+      {
+        "name": "Plan",
+        "price": "$0",
+        "desc": "FOR INDIVIDUALSFree$0Free forever.GET STARTED Unlimited recordings + transcriptions Instant AI call summaries Clips, pla"
+      },
+      {
+        "name": "Free",
+        "price": "Free"
+      },
+      {
+        "name": "free",
+        "price": "$19",
+        "desc": "$19$15$19per month, per user (2 user min)start free trial90 day guarantee"
+      },
+      {
+        "name": "Plan",
+        "price": "$19"
+      }
     ]
   },
   {
@@ -11099,7 +11841,7 @@
       "메모",
       "요약"
     ],
-    "pricing": "무료+유료",
+    "pricing": "무료",
     "korean_support": false,
     "website_url": "https://supernormal.com",
     "featured": false,
@@ -11135,7 +11877,16 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      }
+    ],
+    "pricing_url": "https://www.supernormal.com/",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다."
   },
   {
     "id": "222",
@@ -11185,6 +11936,28 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://lovable.dev/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free",
+        "desc": "Start for free. Upgrade to get the capacity that exactly matches your team's needs."
+      },
+      {
+        "name": "Plan",
+        "price": "$25"
+      },
+      {
+        "name": "Free",
+        "price": "Free"
+      },
+      {
+        "name": "Plan",
+        "price": "$50"
+      }
     ]
   },
   {
@@ -11234,7 +12007,11 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_url": "https://haiper.ai/",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(추출 실패) — 가격 페이지 링크를 확인해 주세요.",
+    "pricing_plans": []
   },
   {
     "id": "224",
@@ -11248,7 +12025,7 @@
       "리팩터링",
       "PR"
     ],
-    "pricing": "유료",
+    "pricing": "무료+유료",
     "korean_support": false,
     "website_url": "https://augmentcode.com",
     "featured": false,
@@ -11283,6 +12060,38 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://www.augmentcode.com/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "Plan",
+        "price": "$20/mo"
+      },
+      {
+        "name": "STANDARD",
+        "price": "$60/mo",
+        "desc": "STANDARD$60/monthper developerFor individuals or small teams that want to ship to production, fast.Install nowEverything"
+      },
+      {
+        "name": "Plan",
+        "price": "$60/mo"
+      },
+      {
+        "name": "Plan",
+        "price": "$200/mo",
+        "desc": "MAX$200/monthper developerDesigned for high-demand teams or businesses with intensive usage needs.Install nowEverything "
+      },
+      {
+        "name": "Plan",
+        "price": "$20"
+      },
+      {
+        "name": "Free",
+        "price": "Free",
+        "desc": "Free & trial use: Community support only; our SLA does not apply to trials or beta usage."
+      }
     ]
   },
   {
@@ -11333,7 +12142,11 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
-    ]
+    ],
+    "pricing_url": "https://app.blackbox.ai/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(추출 실패) — 가격 페이지 링크를 확인해 주세요.",
+    "pricing_plans": []
   },
   {
     "id": "226",
@@ -11383,6 +12196,35 @@
       "고급 기능은 제한적일 수 있음",
       "인터넷 연결 필요",
       "특정 언어·지역 제한 가능"
+    ],
+    "pricing_url": "https://durable.com/pricing",
+    "pricing_last_updated_at": "2026-03-12",
+    "pricing_note": "가격 정보 자동 수집(텍스트 추출 기반). 일부 값은 지역/프로모션에 따라 달라질 수 있습니다.",
+    "pricing_plans": [
+      {
+        "name": "free",
+        "price": "free"
+      },
+      {
+        "name": "Free",
+        "price": "Free"
+      },
+      {
+        "name": "Free",
+        "price": "$20"
+      },
+      {
+        "name": "Free",
+        "price": "$50"
+      },
+      {
+        "name": "Plan",
+        "price": "$0"
+      },
+      {
+        "name": "Free",
+        "price": "$0"
+      }
     ]
   },
   {

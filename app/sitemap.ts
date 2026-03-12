@@ -5,6 +5,8 @@ import { getCategorySlugs } from "@/lib/categories";
 import { getAllArticles, getArticleSlugs } from "@/lib/articles";
 import { getTagKeys } from "@/lib/tags";
 
+const LOCALES = ["ko", "en"];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = getBaseUrl();
   const today = new Date();
@@ -23,19 +25,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
     articleLastModifiedBySlug.set(a.slug, d && !Number.isNaN(d.getTime()) ? d : today);
   }
 
-  const staticPages: MetadataRoute.Sitemap = [
-    { url: base, lastModified: today, changeFrequency: "daily", priority: 1 },
-    { url: `${base}/tools`, lastModified: today, changeFrequency: "daily", priority: 0.9 },
-    { url: `${base}/articles`, lastModified: today, changeFrequency: "weekly", priority: 0.6 },
-    { url: `${base}/news`, lastModified: today, changeFrequency: "hourly", priority: 0.7 },
-    { url: `${base}/contact`, lastModified: today, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/privacy`, lastModified: today, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${base}/terms`, lastModified: today, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${base}/pricing/free`, lastModified: today, changeFrequency: "weekly", priority: 0.7 },
-    { url: `${base}/pricing/paid`, lastModified: today, changeFrequency: "weekly", priority: 0.7 },
-    { url: `${base}/pricing/freemium`, lastModified: today, changeFrequency: "weekly", priority: 0.7 },
-    { url: `${base}/collections`, lastModified: today, changeFrequency: "weekly", priority: 0.7 },
+  const staticPaths = [
+    "",
+    "/tools",
+    "/articles",
+    "/news",
+    "/contact",
+    "/privacy",
+    "/terms",
+    "/pricing/free",
+    "/pricing/paid",
+    "/pricing/freemium",
+    "/collections",
   ];
+  const staticPages: MetadataRoute.Sitemap = [];
+  for (const locale of LOCALES) {
+    for (const path of staticPaths) {
+      const url = path ? `${base}/${locale}${path}` : `${base}/${locale}`;
+      const priority = path === "" ? 1 : path === "/tools" ? 0.9 : path === "/news" ? 0.7 : path === "/contact" ? 0.5 : path === "/privacy" || path === "/terms" ? 0.3 : 0.7;
+      const changeFrequency = path === "/news" ? "hourly" as const : path === "" || path === "/tools" ? "daily" as const : path === "/contact" ? "monthly" as const : path === "/privacy" || path === "/terms" ? "yearly" as const : "weekly" as const;
+      staticPages.push({ url, lastModified: today, changeFrequency, priority });
+    }
+  }
 
   const categorySlugs = getCategorySlugs();
   const categoryPages: MetadataRoute.Sitemap = categorySlugs.map((slug) => ({
@@ -46,12 +57,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const toolSlugs = getToolSlugs();
-  const toolPages: MetadataRoute.Sitemap = toolSlugs.map((slug) => ({
-    url: `${base}/tools/${slug}`,
-    lastModified: toolLastModifiedBySlug.get(slug) || today,
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }));
+  const toolPages: MetadataRoute.Sitemap = [];
+  for (const locale of LOCALES) {
+    for (const slug of toolSlugs) {
+      toolPages.push({
+        url: `${base}/${locale}/tools/${slug}`,
+        lastModified: toolLastModifiedBySlug.get(slug) || today,
+        changeFrequency: "weekly" as const,
+        priority: 0.8,
+      });
+    }
+  }
 
   const articleSlugs = getArticleSlugs();
   const articlePages: MetadataRoute.Sitemap = articleSlugs.map((slug) => ({

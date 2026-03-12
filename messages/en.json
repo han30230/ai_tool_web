@@ -1,0 +1,82 @@
+{
+  "common": {
+    "siteName": "AI Tools Hub",
+    "metaDescription": "Compare 500+ AI tools by category, price, and features. Find the right AI tool for you.",
+    "viewAll": "View all →",
+    "searchPlaceholder": "Search by tool name, tag, or category...",
+    "minRead": " min",
+    "noResults": "No recommended tools yet."
+  },
+  "nav": {
+    "tools": "AI Tools",
+    "collections": "Collections",
+    "freeTools": "Free Tools",
+    "articles": "Articles",
+    "news": "News",
+    "contact": "Contact",
+    "menu": "Menu",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu"
+  },
+  "footer": {
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "contact": "Contact",
+    "copyright": "Copyright © 2025 AI Tools Hub. All rights reserved."
+  },
+  "home": {
+    "heroTitle": "All AI tools in one place",
+    "heroSubtitle": "Compare hundreds of AI services by category, price, and features.\nFind the right AI tool for your work.",
+    "categories": "Categories",
+    "trendingTitle": "🔥 Trending AI Tools",
+    "newestTitle": "🆕 Newly Added",
+    "articlesTitle": "Latest AI Articles",
+    "newsTitle": "Latest AI News"
+  },
+  "tools": {
+    "title": "AI Tools",
+    "metaTitle": "AI Tools | Search, Compare, Recommend",
+    "metaDescription": "Filter and compare real AI tools by category, price, and features. Chatbots, image generation, coding, marketing, and more.",
+    "searchCompare": "Search & compare by category, price, features",
+    "popularTags": "Popular tags",
+    "noTools": "No tools match your filters.",
+    "noToolsHint": "Try changing filters or search terms.",
+    "viewAllTools": "View all tools",
+    "popularTagsDesc": "Browse by tool and article clusters",
+    "toolsCount": "Filter and compare {count} AI tools by category, price, and features."
+  },
+  "articles": {
+    "title": "AI Articles",
+    "metaDescription": "AI tool guides, workflows, prompt templates, and use cases. ChatGPT, Claude, image generation, and more.",
+    "subtitle": "Guides, workflows, prompts, use cases"
+  },
+  "news": {
+    "title": "AI News",
+    "metaDescription": "AI industry news, tool updates, and releases. OpenAI, Google AI, Anthropic, startups, investment, and policy.",
+    "subtitle": "AI industry news, tool updates, releases"
+  },
+  "contact": {
+    "title": "Contact",
+    "metaDescription": "Partnership, ads, tool submission, or general inquiry. AI Tools Hub.",
+    "intro": "Send partnership, ads, tool submission, or general inquiries to the email below.",
+    "email": "Email",
+    "replyNote": "We reply in order during business hours."
+  },
+  "legal": {
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  },
+  "toolDetail": {
+    "overview": "Overview",
+    "features": "Features",
+    "useCases": "Use cases",
+    "pros": "Pros",
+    "cons": "Cons",
+    "relatedArticles": "Related articles",
+    "relatedTools": "Related tools"
+  },
+  "locale": {
+    "ko": "한국어",
+    "en": "English"
+  }
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import type { AINewsItem } from "@/lib/aiNewsFetcher";
 
 /** Format ISO date for display (e.g. "Mar 9, 2025"). */
