@@ -28,7 +28,9 @@ function SideBanner({ side }: { side: Side }) {
     <aside
       className={[
         "fixed top-24 z-40 hidden lg:block",
-        side === "left" ? "left-4" : "right-4",
+        // Overlay banners at the very edge so main content keeps its width.
+        // Slight negative offset reduces perceived page side whitespace.
+        side === "left" ? "-left-2 xl:-left-4" : "-right-2 xl:-right-4",
       ].join(" ")}
       aria-label={alt}
     >

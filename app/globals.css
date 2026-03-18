@@ -37,8 +37,9 @@ body {
 
 @media (min-width: 1024px) {
   body.coupang-side-padding {
-    padding-left: calc(env(safe-area-inset-left) + var(--coupang-side-banner-width) + var(--coupang-side-banner-gap));
-    padding-right: calc(env(safe-area-inset-right) + var(--coupang-side-banner-width) + var(--coupang-side-banner-gap));
+    /* Keep content width; banners overlay at screen edges. */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
 }
 
