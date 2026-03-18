@@ -1,5 +1,6 @@
 import { getLocale } from "next-intl/server";
 import "./globals.css";
+import { CoupangSideBanners } from "../components/CoupangSideBanners";
 
 export const viewport = {
   width: "device-width",
@@ -30,7 +31,10 @@ export default async function RootLayout({
           </>
         )}
       </head>
-      <body className="flex min-h-screen flex-col antialiased">{children}</body>
+      <body className="flex min-h-screen flex-col antialiased coupang-side-padding">
+        <CoupangSideBanners />
+        {children}
+      </body>
     </html>
   );
 }

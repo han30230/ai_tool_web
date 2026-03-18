@@ -25,6 +25,29 @@ body {
   padding-right: env(safe-area-inset-right);
 }
 
+/*
+  Reserve space for fixed side banners on wide screens so they don't cover content.
+  Adjust these values to match your banner dimensions.
+*/
+:root {
+  --coupang-side-banner-width: 160px;
+  --coupang-side-banner-gap: 16px;
+  --coupang-mobile-banner-height: 56px;
+}
+
+@media (min-width: 1280px) {
+  body.coupang-side-padding {
+    padding-left: calc(env(safe-area-inset-left) + var(--coupang-side-banner-width) + var(--coupang-side-banner-gap));
+    padding-right: calc(env(safe-area-inset-right) + var(--coupang-side-banner-width) + var(--coupang-side-banner-gap));
+  }
+}
+
+@media (max-width: 1279.98px) {
+  body.coupang-side-padding {
+    padding-bottom: calc(var(--coupang-mobile-banner-height) + env(safe-area-inset-bottom));
+  }
+}
+
 /* Horizontal scrollbar thin */
 .overflow-x-auto {
   scrollbar-width: thin;
