@@ -53,15 +53,26 @@ export function CoupangPartnersWidget({
     setFailed(false);
     el.innerHTML = "";
 
-    const mountIframeIfPresent = () => {
-      const iframe = el.querySelector("iframe");
-      if (!iframe) return false;
+    const looksLikeCoupangIframe = (node: unknown): node is HTMLIFrameElement => {
+      if (!(node instanceof HTMLIFrameElement)) return false;
+      const src = node.getAttribute("src") ?? "";
+      return src.includes("coupang") || src.includes("ads-partners.coupang.com");
+    };
+
+    const mountIframe = (iframe: HTMLIFrameElement) => {
       iframe.setAttribute("width", String(width));
       iframe.setAttribute("height", String(height));
-      (iframe as HTMLIFrameElement).style.width = "100%";
-      (iframe as HTMLIFrameElement).style.height = "100%";
-      (iframe as HTMLIFrameElement).style.display = "block";
+      iframe.style.width = "100%";
+      iframe.style.height = "100%";
+      iframe.style.display = "block";
+      el.innerHTML = "";
+      el.appendChild(iframe);
       return true;
+    };
+
+    const findCoupangIframeIn = (root: ParentNode) => {
+      const iframes = Array.from(root.querySelectorAll("iframe"));
+      return iframes.find((f) => looksLikeCoupangIframe(f));
     };
 
     const ensureGjs = async () => {
@@ -102,14 +113,33 @@ export function CoupangPartnersWidget({
           return;
         }
 
-        // Watch this container for an injected iframe (most reliable).
-        const obs = new MutationObserver(() => {
-          if (mountIframeIfPresent()) {
-            obs.disconnect();
-            setFailed(false);
+        // Coupang often injects the iframe at the end of <body> (not inside our container).
+        // Observe the whole document and move the newly injected Coupang iframe into our container.
+        const before = new Set(Array.from(document.querySelectorAll("iframe")));
+
+        const obs = new MutationObserver((mutations) => {
+          for (const m of mutations) {
+            for (const n of Array.from(m.addedNodes)) {
+              if (cancelled) return;
+              if (looksLikeCoupangIframe(n)) {
+                mountIframe(n);
+                setFailed(false);
+                obs.disconnect();
+                return;
+              }
+              if (n instanceof HTMLElement) {
+                const found = findCoupangIframeIn(n);
+                if (found) {
+                  mountIframe(found);
+                  setFailed(false);
+                  obs.disconnect();
+                  return;
+                }
+              }
+            }
           }
         });
-        obs.observe(el, { childList: true, subtree: true });
+        obs.observe(document.body, { childList: true, subtree: true });
 
         // Insert inline script inside the container, so Coupang's widget renders at this location.
         const inline = document.createElement("script");
@@ -120,9 +150,20 @@ export function CoupangPartnersWidget({
         // Give it a moment; if nothing was inserted, treat as failure.
         const timeout = window.setTimeout(() => {
           if (cancelled) return;
-          if (!mountIframeIfPresent()) setFailed(true);
+          const now = Array.from(document.querySelectorAll("iframe"));
+          const fresh = now.filter((f) => !before.has(f));
+          const candidate =
+            fresh.find((f) => looksLikeCoupangIframe(f)) ??
+            now.find((f) => looksLikeCoupangIframe(f));
+
+          if (candidate) {
+            mountIframe(candidate);
+            setFailed(false);
+          } else {
+            setFailed(true);
+          }
           obs.disconnect();
-        }, 2200);
+        }, 2500);
 
         return () => {
           window.clearTimeout(timeout);
