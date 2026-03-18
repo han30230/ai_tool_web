@@ -27,7 +27,7 @@ function SideBanner({ side }: { side: Side }) {
   return (
     <aside
       className={[
-        "fixed top-24 z-40 hidden xl:block",
+        "fixed top-24 z-40 hidden lg:block",
         side === "left" ? "left-4" : "right-4",
       ].join(" ")}
       aria-label={alt}
@@ -40,6 +40,23 @@ function SideBanner({ side }: { side: Side }) {
             template={template}
             width={160}
             height={600}
+            fallback={
+              href ? (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="block hover:shadow transition-shadow"
+                >
+                  {imgSrc ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={imgSrc} alt={alt} className="h-auto w-full" loading="lazy" />
+                  ) : (
+                    <div className="p-3 text-xs text-slate-600">쿠팡 파트너스 배너</div>
+                  )}
+                </a>
+              ) : null
+            }
           />
         ) : (
           <a
@@ -81,7 +98,7 @@ export function CoupangSideBanners() {
 
       {(useWidget || mobileHref) && (
         <aside
-          className="fixed inset-x-0 bottom-0 z-50 xl:hidden"
+          className="fixed inset-x-0 bottom-0 z-50 lg:hidden"
           aria-label="Coupang Partners (Mobile)"
         >
           <div className="mx-auto w-full max-w-[900px] border-t border-slate-200 bg-white shadow-[0_-6px_20px_-12px_rgba(0,0,0,0.35)]">
@@ -93,6 +110,28 @@ export function CoupangSideBanners() {
                   template={template}
                   width={320}
                   height={50}
+                  fallback={
+                    mobileHref ? (
+                      <a
+                        href={mobileHref}
+                        target="_blank"
+                        rel="noopener noreferrer sponsored"
+                        className="flex h-[var(--coupang-mobile-banner-height)] w-full items-center justify-center"
+                      >
+                        {mobileImg ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={mobileImg}
+                            alt="Coupang Partners (Mobile)"
+                            className="h-full w-full object-contain"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="text-sm text-slate-700">쿠팡 파트너스 배너</div>
+                        )}
+                      </a>
+                    ) : null
+                  }
                 />
               </div>
             ) : (

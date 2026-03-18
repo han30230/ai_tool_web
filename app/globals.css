@@ -35,14 +35,14 @@ body {
   --coupang-mobile-banner-height: 56px;
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1024px) {
   body.coupang-side-padding {
     padding-left: calc(env(safe-area-inset-left) + var(--coupang-side-banner-width) + var(--coupang-side-banner-gap));
     padding-right: calc(env(safe-area-inset-right) + var(--coupang-side-banner-width) + var(--coupang-side-banner-gap));
   }
 }
 
-@media (max-width: 1279.98px) {
+@media (max-width: 1023.98px) {
   body.coupang-side-padding {
     padding-bottom: calc(var(--coupang-mobile-banner-height) + env(safe-area-inset-bottom));
   }

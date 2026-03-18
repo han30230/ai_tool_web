@@ -1,6 +1,7 @@
 "use client";
 
 import Script from "next/script";
+import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 
 declare global {
@@ -25,6 +26,7 @@ type Props = {
   width: number;
   height: number;
   tsource?: string;
+  fallback?: ReactNode;
 };
 
 export function CoupangPartnersWidget({
@@ -34,8 +36,10 @@ export function CoupangPartnersWidget({
   width,
   height,
   tsource = "",
+  fallback,
 }: Props) {
   const [ready, setReady] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const containerId = useMemo(
     () => `coupang-widget-${widgetId}-${template}-${width}x${height}-${Math.random().toString(36).slice(2)}`,
@@ -49,42 +53,73 @@ export function CoupangPartnersWidget({
     const el = document.getElementById(containerId);
     if (!el) return;
 
-    // Coupang's script often injects an iframe without a container hook.
-    // We capture newly-added iframe(s) and move the newest one into our container.
-    const before = new Set(
-      Array.from(document.querySelectorAll("iframe")).map((n) => n),
-    );
-
+    setFailed(false);
     el.innerHTML = "";
 
-    new window.PartnersCoupang.G({
+    const before = new Set(Array.from(document.querySelectorAll("iframe")));
+
+    try {
+      new window.PartnersCoupang.G({
       id: widgetId,
       template,
       trackingCode,
       width: String(width),
       height: String(height),
       tsource,
-    });
+      });
+    } catch {
+      setFailed(true);
+      return;
+    }
 
-    const moveInjectedIframe = () => {
-      const iframes = Array.from(document.querySelectorAll("iframe"));
-      const fresh = iframes.filter((n) => !before.has(n));
-      const candidate = fresh[fresh.length - 1] ?? iframes[iframes.length - 1];
-      if (candidate && candidate instanceof HTMLIFrameElement) {
-        el.innerHTML = "";
-        el.appendChild(candidate);
-      }
+    const attach = (iframe: HTMLIFrameElement) => {
+      el.innerHTML = "";
+      el.appendChild(iframe);
+      return true;
     };
 
-    // Try a few times in case injection is async.
-    const t1 = window.setTimeout(moveInjectedIframe, 0);
-    const t2 = window.setTimeout(moveInjectedIframe, 50);
-    const t3 = window.setTimeout(moveInjectedIframe, 250);
+    const findCandidate = () => {
+      const iframes = Array.from(document.querySelectorAll("iframe"));
+      const fresh = iframes.filter((n) => !before.has(n));
+
+      const pickBySize = (arr: HTMLIFrameElement[]) =>
+        arr.find((f) => {
+          const w = Number(f.getAttribute("width") ?? f.style.width?.replace("px", ""));
+          const h = Number(f.getAttribute("height") ?? f.style.height?.replace("px", ""));
+          return (w === width || !Number.isFinite(w)) && (h === height || !Number.isFinite(h));
+        });
+
+      return (
+        pickBySize(fresh as HTMLIFrameElement[]) ??
+        (fresh[fresh.length - 1] as HTMLIFrameElement | undefined) ??
+        (iframes[iframes.length - 1] as HTMLIFrameElement | undefined)
+      );
+    };
+
+    // First quick attempt.
+    const immediate = findCandidate();
+    if (immediate) attach(immediate);
+
+    // Robust: observe DOM mutations for up to 2 seconds.
+    const startedAt = Date.now();
+    const obs = new MutationObserver(() => {
+      const cand = findCandidate();
+      if (cand && attach(cand)) obs.disconnect();
+      if (Date.now() - startedAt > 2000) {
+        obs.disconnect();
+        if (!el.querySelector("iframe")) setFailed(true);
+      }
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    const timeout = window.setTimeout(() => {
+      obs.disconnect();
+      if (!el.querySelector("iframe")) setFailed(true);
+    }, 2200);
 
     return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-      window.clearTimeout(t3);
+      obs.disconnect();
+      window.clearTimeout(timeout);
     };
   }, [containerId, height, ready, template, trackingCode, tsource, widgetId, width]);
 
@@ -94,8 +129,13 @@ export function CoupangPartnersWidget({
         src="https://ads-partners.coupang.com/g.js"
         strategy="afterInteractive"
         onLoad={() => setReady(true)}
+        onError={() => setFailed(true)}
       />
-      <div id={containerId} suppressHydrationWarning />
+      {failed && fallback ? (
+        <>{fallback}</>
+      ) : (
+        <div id={containerId} suppressHydrationWarning />
+      )}
     </>
   );
 }
