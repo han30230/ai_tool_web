@@ -48,7 +48,10 @@ export function CoupangPartnersWidget({
 
   useEffect(() => {
     if (!ready) return;
-    if (!window.PartnersCoupang?.G) return;
+    if (!window.PartnersCoupang?.G) {
+      setFailed(true);
+      return;
+    }
 
     const el = document.getElementById(containerId);
     if (!el) return;
@@ -89,10 +92,16 @@ export function CoupangPartnersWidget({
           return (w === width || !Number.isFinite(w)) && (h === height || !Number.isFinite(h));
         });
 
+      const looksLikeCoupang = (f: HTMLIFrameElement) => {
+        const src = f.getAttribute("src") ?? "";
+        return src.includes("coupang") || src.includes("ads-partners.coupang.com");
+      };
+
       return (
+        (fresh as HTMLIFrameElement[]).find(looksLikeCoupang) ??
         pickBySize(fresh as HTMLIFrameElement[]) ??
-        (fresh[fresh.length - 1] as HTMLIFrameElement | undefined) ??
-        (iframes[iframes.length - 1] as HTMLIFrameElement | undefined)
+        (iframes as HTMLIFrameElement[]).find(looksLikeCoupang) ??
+        (fresh[fresh.length - 1] as HTMLIFrameElement | undefined)
       );
     };
 
