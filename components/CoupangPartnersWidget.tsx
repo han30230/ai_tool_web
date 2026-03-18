@@ -1,8 +1,7 @@
 "use client";
 
-import Script from "next/script";
 import type { ReactNode } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 declare global {
   interface Window {
@@ -38,8 +37,8 @@ export function CoupangPartnersWidget({
   tsource = "",
   fallback,
 }: Props) {
-  const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   const containerId = useMemo(
     () => `coupang-widget-${widgetId}-${template}-${width}x${height}-${Math.random().toString(36).slice(2)}`,
@@ -47,103 +46,81 @@ export function CoupangPartnersWidget({
   );
 
   useEffect(() => {
-    if (!ready) return;
-    if (!window.PartnersCoupang?.G) {
-      setFailed(true);
-      return;
-    }
-
-    const el = document.getElementById(containerId);
+    const el = containerRef.current;
     if (!el) return;
 
+    let cancelled = false;
     setFailed(false);
     el.innerHTML = "";
 
-    const before = new Set(Array.from(document.querySelectorAll("iframe")));
-
-    try {
-      new window.PartnersCoupang.G({
-      id: widgetId,
-      template,
-      trackingCode,
-      width: String(width),
-      height: String(height),
-      tsource,
-      });
-    } catch {
-      setFailed(true);
-      return;
-    }
-
-    const attach = (iframe: HTMLIFrameElement) => {
-      el.innerHTML = "";
-      el.appendChild(iframe);
-      return true;
-    };
-
-    const findCandidate = () => {
-      const iframes = Array.from(document.querySelectorAll("iframe"));
-      const fresh = iframes.filter((n) => !before.has(n));
-
-      const pickBySize = (arr: HTMLIFrameElement[]) =>
-        arr.find((f) => {
-          const w = Number(f.getAttribute("width") ?? f.style.width?.replace("px", ""));
-          const h = Number(f.getAttribute("height") ?? f.style.height?.replace("px", ""));
-          return (w === width || !Number.isFinite(w)) && (h === height || !Number.isFinite(h));
+    const ensureGjs = async () => {
+      // Load g.js once globally (like the Tistory copy-paste).
+      const existing = document.getElementById("coupang-gjs") as HTMLScriptElement | null;
+      if (existing) {
+        if ((existing as any)._loaded) return;
+        await new Promise<void>((resolve, reject) => {
+          existing.addEventListener("load", () => resolve(), { once: true });
+          existing.addEventListener("error", () => reject(new Error("g.js load failed")), {
+            once: true,
+          });
         });
-
-      const looksLikeCoupang = (f: HTMLIFrameElement) => {
-        const src = f.getAttribute("src") ?? "";
-        return src.includes("coupang") || src.includes("ads-partners.coupang.com");
-      };
-
-      return (
-        (fresh as HTMLIFrameElement[]).find(looksLikeCoupang) ??
-        pickBySize(fresh as HTMLIFrameElement[]) ??
-        (iframes as HTMLIFrameElement[]).find(looksLikeCoupang) ??
-        (fresh[fresh.length - 1] as HTMLIFrameElement | undefined)
-      );
-    };
-
-    // First quick attempt.
-    const immediate = findCandidate();
-    if (immediate) attach(immediate);
-
-    // Robust: observe DOM mutations for up to 2 seconds.
-    const startedAt = Date.now();
-    const obs = new MutationObserver(() => {
-      const cand = findCandidate();
-      if (cand && attach(cand)) obs.disconnect();
-      if (Date.now() - startedAt > 2000) {
-        obs.disconnect();
-        if (!el.querySelector("iframe")) setFailed(true);
+        return;
       }
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
 
-    const timeout = window.setTimeout(() => {
-      obs.disconnect();
-      if (!el.querySelector("iframe")) setFailed(true);
-    }, 2200);
-
-    return () => {
-      obs.disconnect();
-      window.clearTimeout(timeout);
+      await new Promise<void>((resolve, reject) => {
+        const s = document.createElement("script");
+        s.id = "coupang-gjs";
+        s.src = "https://ads-partners.coupang.com/g.js";
+        s.async = true;
+        s.onload = () => {
+          (s as any)._loaded = true;
+          resolve();
+        };
+        s.onerror = () => reject(new Error("g.js load failed"));
+        document.head.appendChild(s);
+      });
     };
-  }, [containerId, height, ready, template, trackingCode, tsource, widgetId, width]);
+
+    const initWidget = async () => {
+      try {
+        await ensureGjs();
+        if (cancelled) return;
+
+        // Insert inline script inside the container, so Coupang's widget renders at this location
+        // (mirrors the working "copy-paste" pattern).
+        const inline = document.createElement("script");
+        inline.type = "text/javascript";
+        inline.text = `new PartnersCoupang.G({"id":${widgetId},"template":"${template}","trackingCode":"${trackingCode}","width":"${width}","height":"${height}","tsource":"${tsource}"});`;
+        el.appendChild(inline);
+
+        // Give it a moment; if nothing was inserted, treat as failure.
+        window.setTimeout(() => {
+          if (cancelled) return;
+          const hasIframe = el.querySelector("iframe");
+          if (!hasIframe) setFailed(true);
+        }, 800);
+      } catch {
+        if (!cancelled) setFailed(true);
+      }
+    };
+
+    void initWidget();
+    return () => {
+      cancelled = true;
+    };
+  }, [height, template, trackingCode, tsource, widgetId, width]);
 
   return (
     <>
-      <Script
-        src="https://ads-partners.coupang.com/g.js"
-        strategy="afterInteractive"
-        onLoad={() => setReady(true)}
-        onError={() => setFailed(true)}
-      />
       {failed && fallback ? (
         <>{fallback}</>
       ) : (
-        <div id={containerId} suppressHydrationWarning />
+        <div
+          id={containerId}
+          ref={containerRef}
+          suppressHydrationWarning
+          style={{ minWidth: width, minHeight: height }}
+        />
       )}
     </>
   );
