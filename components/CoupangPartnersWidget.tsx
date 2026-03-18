@@ -1,7 +1,7 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 declare global {
   interface Window {
@@ -35,20 +35,28 @@ export function CoupangPartnersWidget({
   height,
   tsource = "",
 }: Props) {
+  const [ready, setReady] = useState(false);
+
   const containerId = useMemo(
     () => `coupang-widget-${widgetId}-${template}-${width}x${height}-${Math.random().toString(36).slice(2)}`,
     [widgetId, template, width, height],
   );
 
   useEffect(() => {
+    if (!ready) return;
     if (!window.PartnersCoupang?.G) return;
 
     const el = document.getElementById(containerId);
     if (!el) return;
 
+    // Coupang's script often injects an iframe without a container hook.
+    // We capture newly-added iframe(s) and move the newest one into our container.
+    const before = new Set(
+      Array.from(document.querySelectorAll("iframe")).map((n) => n),
+    );
+
     el.innerHTML = "";
-    // The Coupang widget script writes into the DOM (typically relative to the current document).
-    // We create a dedicated container element and then instantiate the widget.
+
     new window.PartnersCoupang.G({
       id: widgetId,
       template,
@@ -57,12 +65,37 @@ export function CoupangPartnersWidget({
       height: String(height),
       tsource,
     });
-  }, [containerId, height, template, trackingCode, tsource, widgetId, width]);
+
+    const moveInjectedIframe = () => {
+      const iframes = Array.from(document.querySelectorAll("iframe"));
+      const fresh = iframes.filter((n) => !before.has(n));
+      const candidate = fresh[fresh.length - 1] ?? iframes[iframes.length - 1];
+      if (candidate && candidate instanceof HTMLIFrameElement) {
+        el.innerHTML = "";
+        el.appendChild(candidate);
+      }
+    };
+
+    // Try a few times in case injection is async.
+    const t1 = window.setTimeout(moveInjectedIframe, 0);
+    const t2 = window.setTimeout(moveInjectedIframe, 50);
+    const t3 = window.setTimeout(moveInjectedIframe, 250);
+
+    return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      window.clearTimeout(t3);
+    };
+  }, [containerId, height, ready, template, trackingCode, tsource, widgetId, width]);
 
   return (
     <>
-      <Script src="https://ads-partners.coupang.com/g.js" strategy="afterInteractive" />
-      <div id={containerId} />
+      <Script
+        src="https://ads-partners.coupang.com/g.js"
+        strategy="afterInteractive"
+        onLoad={() => setReady(true)}
+      />
+      <div id={containerId} suppressHydrationWarning />
     </>
   );
 }
