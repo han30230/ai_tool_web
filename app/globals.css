@@ -33,6 +33,7 @@ body {
   --coupang-side-banner-width: 160px;
   --coupang-side-banner-gap: 16px;
   --coupang-mobile-banner-height: 56px;
+  --coupang-desktop-bottom-banner-height: 140px;
 }
 
 @media (min-width: 1024px) {
@@ -40,6 +41,8 @@ body {
     /* Keep content width; banners overlay at screen edges. */
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
+    /* Reserve space so fixed bottom banner doesn't cover content. */
+    padding-bottom: calc(var(--coupang-desktop-bottom-banner-height) + 24px);
   }
 }
 

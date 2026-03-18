@@ -90,6 +90,10 @@ export function CoupangSideBanners() {
   const widgetId = widgetIdRaw ? Number(widgetIdRaw) : undefined;
   const useWidget = Number.isFinite(widgetId) && !!trackingCode;
 
+  const bottomWidgetIdRaw = process.env.NEXT_PUBLIC_COUPANG_BOTTOM_WIDGET_ID ?? "973392";
+  const bottomWidgetId = bottomWidgetIdRaw ? Number(bottomWidgetIdRaw) : undefined;
+  const useBottomWidget = Number.isFinite(bottomWidgetId) && !!trackingCode;
+
   const mobileHref = process.env.NEXT_PUBLIC_COUPANG_MOBILE_URL;
   const mobileImg = process.env.NEXT_PUBLIC_COUPANG_MOBILE_IMG;
 
@@ -97,6 +101,26 @@ export function CoupangSideBanners() {
     <>
       <SideBanner side="left" />
       <SideBanner side="right" />
+
+      {/* Desktop bottom banner to utilize leftover wide-screen whitespace */}
+      {useBottomWidget && (
+        <aside
+          className="fixed inset-x-0 bottom-3 z-40 hidden lg:block pointer-events-none"
+          aria-label="Coupang Partners (Desktop Bottom)"
+        >
+          <div className="mx-auto w-full max-w-[680px] pointer-events-auto overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+            <div className="h-[var(--coupang-desktop-bottom-banner-height)]">
+              <CoupangPartnersWidget
+                widgetId={bottomWidgetId as number}
+                trackingCode={trackingCode as string}
+                template={template}
+                width={680}
+                height={140}
+              />
+            </div>
+          </div>
+        </aside>
+      )}
 
       {(useWidget || mobileHref) && (
         <aside
