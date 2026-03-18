@@ -53,6 +53,17 @@ export function CoupangPartnersWidget({
     setFailed(false);
     el.innerHTML = "";
 
+    const mountIframeIfPresent = () => {
+      const iframe = el.querySelector("iframe");
+      if (!iframe) return false;
+      iframe.setAttribute("width", String(width));
+      iframe.setAttribute("height", String(height));
+      (iframe as HTMLIFrameElement).style.width = "100%";
+      (iframe as HTMLIFrameElement).style.height = "100%";
+      (iframe as HTMLIFrameElement).style.display = "block";
+      return true;
+    };
+
     const ensureGjs = async () => {
       // Load g.js once globally (like the Tistory copy-paste).
       const existing = document.getElementById("coupang-gjs") as HTMLScriptElement | null;
@@ -86,27 +97,49 @@ export function CoupangPartnersWidget({
         await ensureGjs();
         if (cancelled) return;
 
-        // Insert inline script inside the container, so Coupang's widget renders at this location
-        // (mirrors the working "copy-paste" pattern).
+        if (!window.PartnersCoupang?.G) {
+          setFailed(true);
+          return;
+        }
+
+        // Watch this container for an injected iframe (most reliable).
+        const obs = new MutationObserver(() => {
+          if (mountIframeIfPresent()) {
+            obs.disconnect();
+            setFailed(false);
+          }
+        });
+        obs.observe(el, { childList: true, subtree: true });
+
+        // Insert inline script inside the container, so Coupang's widget renders at this location.
         const inline = document.createElement("script");
         inline.type = "text/javascript";
         inline.text = `new PartnersCoupang.G({"id":${widgetId},"template":"${template}","trackingCode":"${trackingCode}","width":"${width}","height":"${height}","tsource":"${tsource}"});`;
         el.appendChild(inline);
 
         // Give it a moment; if nothing was inserted, treat as failure.
-        window.setTimeout(() => {
+        const timeout = window.setTimeout(() => {
           if (cancelled) return;
-          const hasIframe = el.querySelector("iframe");
-          if (!hasIframe) setFailed(true);
-        }, 800);
+          if (!mountIframeIfPresent()) setFailed(true);
+          obs.disconnect();
+        }, 2200);
+
+        return () => {
+          window.clearTimeout(timeout);
+          obs.disconnect();
+        };
       } catch {
         if (!cancelled) setFailed(true);
       }
     };
 
-    void initWidget();
+    let cleanup: (() => void) | undefined;
+    void initWidget().then((c) => {
+      cleanup = c;
+    });
     return () => {
       cancelled = true;
+      cleanup?.();
     };
   }, [height, template, trackingCode, tsource, widgetId, width]);
 
@@ -119,9 +152,23 @@ export function CoupangPartnersWidget({
           id={containerId}
           ref={containerRef}
           suppressHydrationWarning
-          style={{ minWidth: width, minHeight: height }}
+          style={{
+            minWidth: width,
+            minHeight: height,
+            width: "100%",
+            height: "100%",
+            overflow: "hidden",
+          }}
         />
       )}
+      {failed && !fallback ? (
+        <div
+          className="flex items-center justify-center text-xs text-slate-500"
+          style={{ width: "100%", height: "100%", minWidth: width, minHeight: height }}
+        >
+          Coupang widget failed to load
+        </div>
+      ) : null}
     </>
   );
 }
