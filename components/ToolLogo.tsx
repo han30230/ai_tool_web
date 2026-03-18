@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useCallback } from "react";
 import type { Tool } from "@/lib/types";
 import { getLogoUrlCandidates } from "@/lib/tools";
@@ -64,18 +63,25 @@ export function ToolLogo({ tool, size = 40, className = "", priority = false }: 
       className={`relative shrink-0 overflow-hidden rounded-md bg-slate-100 ${className || ""}`}
       style={{ width: size, height: size }}
     >
-      <Image
+      {/* Use <img> instead of next/image to avoid server-side optimization fetch failures
+          when external logo hosts (e.g. logo.clearbit.com) are blocked by DNS/network. */}
+      <img
         src={currentUrl}
         alt=""
         width={size}
         height={size}
-        className="object-contain p-1"
-        priority={priority}
-        placeholder="blur"
-        blurDataURL={BLUR_DATA_URL}
+        className="h-full w-full object-contain p-1"
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        referrerPolicy="no-referrer"
         onError={handleError}
         onLoad={handleLoad}
-        sizes={`${size}px`}
+        style={{
+          backgroundImage: `url("${BLUR_DATA_URL}")`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
       />
     </div>
   );
