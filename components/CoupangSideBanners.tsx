@@ -1,4 +1,5 @@
 import { CoupangPartnersWidget } from "./CoupangPartnersWidget";
+import { CoupangSideColumn } from "./CoupangSideColumn";
 
 type Side = "left" | "right";
 
@@ -28,55 +29,37 @@ function SideBanner({ side }: { side: Side }) {
     <aside
       className={[
         "fixed top-24 z-40 hidden lg:block",
-        // Overlay banners at the very edge so main content keeps its width.
-        // Slight negative offset reduces perceived page side whitespace.
         side === "left" ? "-left-2 xl:-left-4" : "-right-2 xl:-right-4",
       ].join(" ")}
       aria-label={alt}
     >
-      <div className="w-[var(--coupang-side-banner-width)] overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      <div className="w-[var(--coupang-side-banner-width)]">
         {useWidget ? (
-          <CoupangPartnersWidget
+          <CoupangSideColumn
+            side={side}
             widgetId={widgetId as number}
             trackingCode={trackingCode as string}
             template={template}
-            width={120}
-            height={600}
-            fallback={
-              href ? (
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer sponsored"
-                  className="block hover:shadow transition-shadow"
-                >
-                  {imgSrc ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={imgSrc} alt={alt} className="h-auto w-full" loading="lazy" />
-                  ) : (
-                    <div className="p-3 text-xs text-slate-600">쿠팡 파트너스 배너</div>
-                  )}
-                </a>
-              ) : null
-            }
           />
         ) : (
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="block hover:shadow transition-shadow"
-          >
-            {imgSrc ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={imgSrc} alt={alt} className="h-auto w-full" loading="lazy" />
-            ) : (
-              <div className="p-3 text-xs text-slate-600">
-                쿠팡 파트너스 배너
-                <div className="mt-1 text-[11px] text-slate-500">이미지 URL 환경변수 설정 필요</div>
-              </div>
-            )}
-          </a>
+          <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="block hover:shadow transition-shadow"
+            >
+              {imgSrc ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={imgSrc} alt={alt} className="h-auto w-full" loading="lazy" />
+              ) : (
+                <div className="p-3 text-xs text-slate-600">
+                  쿠팡 파트너스 배너
+                  <div className="mt-1 text-[11px] text-slate-500">이미지 URL 환경변수 설정 필요</div>
+                </div>
+              )}
+            </a>
+          </div>
         )}
       </div>
     </aside>
