@@ -19,7 +19,8 @@ declare global {
 
 const SLOT_COUNT = 3;
 const WIDGET_WIDTH = 120;
-const WIDGET_HEIGHT = 600;
+/** Shorter height so slot matches ad content and reduces white gap between widgets. */
+const WIDGET_HEIGHT = 220;
 
 function looksLikeCoupangIframe(node: unknown): node is HTMLIFrameElement {
   if (!(node instanceof HTMLIFrameElement)) return false;
@@ -149,7 +150,7 @@ export function CoupangSideColumn({
 
   if (failed) {
     return (
-      <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-3">
+      <div className="flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-2">
         {Array.from({ length: SLOT_COUNT }).map((_, i) => (
           <div
             key={i}
@@ -164,7 +165,7 @@ export function CoupangSideColumn({
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       {Array.from({ length: SLOT_COUNT }).map((_, i) => (
         <div
           key={i}
@@ -174,7 +175,7 @@ export function CoupangSideColumn({
           className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm"
           style={{
             width: WIDGET_WIDTH,
-            minHeight: WIDGET_HEIGHT,
+            height: WIDGET_HEIGHT,
           }}
         />
       ))}
