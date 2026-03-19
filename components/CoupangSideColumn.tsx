@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 declare global {
   interface Window {
@@ -11,6 +11,7 @@ declare global {
         trackingCode: string;
         width: string;
         height: string;
+        subId?: string | null;
         tsource?: string;
       }) => unknown;
     };
@@ -18,9 +19,16 @@ declare global {
 }
 
 const SLOT_COUNT = 3;
-const WIDGET_WIDTH = 120;
-/** Shorter height so slot matches ad content and reduces white gap between widgets. */
-const WIDGET_HEIGHT = 220;
+const COLUMN_WIDTH = 120;
+
+/** Per-slot widget config: 1=973392(680x140), 2=973369(500x2000), 3=existing env widget. */
+function getSlotConfigs(thirdWidgetId: number): { id: number; width: number; height: number }[] {
+  return [
+    { id: 973392, width: COLUMN_WIDTH, height: 140 },
+    { id: 973369, width: COLUMN_WIDTH, height: 600 },
+    { id: thirdWidgetId, width: COLUMN_WIDTH, height: 220 },
+  ];
+}
 
 function looksLikeCoupangIframe(node: unknown): node is HTMLIFrameElement {
   if (!(node instanceof HTMLIFrameElement)) return false;
@@ -95,6 +103,8 @@ export function CoupangSideColumn({
   const slotRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [failed, setFailed] = useState(false);
 
+  const slotConfigs = useMemo(() => getSlotConfigs(widgetId), [widgetId]);
+
   useEffect(() => {
     const slots = slotRefs.current;
     if (!slots[0]) return;
@@ -114,7 +124,8 @@ export function CoupangSideColumn({
         for (let i = 0; i < SLOT_COUNT; i++) {
           if (cancelled) return;
           const slotEl = slots[i];
-          if (!slotEl) continue;
+          const config = slotConfigs[i];
+          if (!slotEl || !config) continue;
 
           const before = new Set(
             Array.from(document.querySelectorAll("iframe")) as HTMLIFrameElement[]
@@ -122,15 +133,15 @@ export function CoupangSideColumn({
 
           const inline = document.createElement("script");
           inline.type = "text/javascript";
-          inline.text = `new PartnersCoupang.G({"id":${widgetId},"template":"${template}","trackingCode":"${trackingCode}","width":"${WIDGET_WIDTH}","height":"${WIDGET_HEIGHT}","tsource":"${tsource}"});`;
+          inline.text = `new PartnersCoupang.G({"id":${config.id},"trackingCode":"${trackingCode}","subId":null,"template":"${template}","width":"${config.width}","height":"${config.height}"});`;
           document.body.appendChild(inline);
           document.body.removeChild(inline);
 
           const iframe = await waitForNewCoupangIframe(before);
           if (cancelled) return;
           if (iframe && slotEl) {
-            iframe.setAttribute("width", String(WIDGET_WIDTH));
-            iframe.setAttribute("height", String(WIDGET_HEIGHT));
+            iframe.setAttribute("width", String(config.width));
+            iframe.setAttribute("height", String(config.height));
             iframe.style.width = "100%";
             iframe.style.height = "100%";
             iframe.style.display = "block";
@@ -151,11 +162,11 @@ export function CoupangSideColumn({
   if (failed) {
     return (
       <div className="flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-2">
-        {Array.from({ length: SLOT_COUNT }).map((_, i) => (
+        {slotConfigs.map((config, i) => (
           <div
             key={i}
             className="flex items-center justify-center rounded bg-slate-100 text-xs text-slate-500"
-            style={{ width: WIDGET_WIDTH, height: WIDGET_HEIGHT }}
+            style={{ width: config.width, height: config.height }}
           >
             Coupang widget
           </div>
@@ -166,7 +177,7 @@ export function CoupangSideColumn({
 
   return (
     <div className="flex flex-col gap-2">
-      {Array.from({ length: SLOT_COUNT }).map((_, i) => (
+      {slotConfigs.map((config, i) => (
         <div
           key={i}
           ref={(el) => {
@@ -174,8 +185,8 @@ export function CoupangSideColumn({
           }}
           className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm"
           style={{
-            width: WIDGET_WIDTH,
-            height: WIDGET_HEIGHT,
+            width: config.width,
+            height: config.height,
           }}
         />
       ))}
