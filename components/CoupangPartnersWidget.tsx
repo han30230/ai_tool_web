@@ -12,6 +12,7 @@ declare global {
         trackingCode: string;
         width: string;
         height: string;
+        subId?: string | null;
         tsource?: string;
       }) => unknown;
     };
