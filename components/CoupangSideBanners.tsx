@@ -40,7 +40,7 @@ function SideBanner({ side }: { side: Side }) {
             widgetId={widgetId as number}
             trackingCode={trackingCode as string}
             template={template}
-            width={160}
+            width={120}
             height={600}
             fallback={
               href ? (
@@ -88,7 +88,11 @@ export function CoupangSideBanners() {
   const trackingCode = process.env.NEXT_PUBLIC_COUPANG_TRACKING_CODE;
   const template = process.env.NEXT_PUBLIC_COUPANG_TEMPLATE ?? "carousel";
   const widgetId = widgetIdRaw ? Number(widgetIdRaw) : undefined;
-  const useWidget = Number.isFinite(widgetId) && !!trackingCode;
+  const useSideWidget = Number.isFinite(widgetId) && !!trackingCode;
+
+  const mobileWidgetIdRaw = process.env.NEXT_PUBLIC_COUPANG_MOBILE_WIDGET_ID;
+  const mobileWidgetId = mobileWidgetIdRaw ? Number(mobileWidgetIdRaw) : undefined;
+  const useMobileWidget = Number.isFinite(mobileWidgetId) && !!trackingCode;
 
   const mobileHref = process.env.NEXT_PUBLIC_COUPANG_MOBILE_URL;
   const mobileImg = process.env.NEXT_PUBLIC_COUPANG_MOBILE_IMG;
@@ -98,16 +102,16 @@ export function CoupangSideBanners() {
       <SideBanner side="left" />
       <SideBanner side="right" />
 
-      {(useWidget || mobileHref) && (
+      {(useMobileWidget || mobileHref) && (
         <aside
           className="fixed inset-x-0 bottom-0 z-50 lg:hidden"
           aria-label="Coupang Partners (Mobile)"
         >
           <div className="mx-auto w-full max-w-[900px] border-t border-slate-200 bg-white shadow-[0_-6px_20px_-12px_rgba(0,0,0,0.35)]">
-            {useWidget ? (
+            {useMobileWidget ? (
               <div className="h-[var(--coupang-mobile-banner-height)] px-3">
                 <CoupangPartnersWidget
-                  widgetId={widgetId as number}
+                  widgetId={mobileWidgetId as number}
                   trackingCode={trackingCode as string}
                   template={template}
                   width={320}

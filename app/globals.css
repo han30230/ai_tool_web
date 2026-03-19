@@ -30,7 +30,7 @@ body {
   Adjust these values to match your banner dimensions.
 */
 :root {
-  --coupang-side-banner-width: 160px;
+  --coupang-side-banner-width: 120px;
   --coupang-side-banner-gap: 16px;
   --coupang-mobile-banner-height: 56px;
 }
