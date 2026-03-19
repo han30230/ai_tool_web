@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 declare global {
   interface Window {
@@ -18,17 +18,11 @@ declare global {
   }
 }
 
-const SLOT_COUNT = 3;
+const SLOT_COUNT = 1;
 const COLUMN_WIDTH = 120;
 
-/** Per-slot widget config: 1=973392(680x140), 2=973369(500x2000), 3=existing env widget. */
-function getSlotConfigs(thirdWidgetId: number): { id: number; width: number; height: number }[] {
-  return [
-    { id: 973392, width: COLUMN_WIDTH, height: 140 },
-    { id: 973369, width: COLUMN_WIDTH, height: 600 },
-    { id: thirdWidgetId, width: COLUMN_WIDTH, height: 220 },
-  ];
-}
+/** Single widget 973369 only. */
+const SLOT_CONFIG = [{ id: 973369, width: COLUMN_WIDTH, height: 600 }];
 
 function looksLikeCoupangIframe(node: unknown): node is HTMLIFrameElement {
   if (!(node instanceof HTMLIFrameElement)) return false;
@@ -103,7 +97,7 @@ export function CoupangSideColumn({
   const slotRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [failed, setFailed] = useState(false);
 
-  const slotConfigs = useMemo(() => getSlotConfigs(widgetId), [widgetId]);
+  const slotConfigs = SLOT_CONFIG;
 
   useEffect(() => {
     const slots = slotRefs.current;
@@ -157,7 +151,7 @@ export function CoupangSideColumn({
     return () => {
       cancelled = true;
     };
-  }, [side, template, trackingCode, tsource, widgetId]);
+  }, [side, template, trackingCode, tsource]);
 
   if (failed) {
     return (
