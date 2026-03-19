@@ -85,7 +85,7 @@ export function CoupangSideBanners() {
       <SideBanner side="left" />
       <SideBanner side="right" />
 
-      {(useMobileWidget || mobileHref) && (
+      {(useMobileWidget || mobileHref || useSideWidget) && (
         <aside
           className="fixed inset-x-0 bottom-0 z-50 lg:hidden"
           aria-label="Coupang Partners (Mobile)"
@@ -121,6 +121,16 @@ export function CoupangSideBanners() {
                       </a>
                     ) : null
                   }
+                />
+              </div>
+            ) : useSideWidget ? (
+              <div className="h-[var(--coupang-mobile-banner-height)] px-3">
+                <CoupangPartnersWidget
+                  widgetId={widgetId as number}
+                  trackingCode={trackingCode as string}
+                  template={template}
+                  width={320}
+                  height={50}
                 />
               </div>
             ) : (
