@@ -28,7 +28,7 @@ function SideBanner({ side }: { side: Side }) {
   return (
     <aside
       className={[
-        "fixed top-24 z-40 hidden lg:block",
+        "fixed top-40 z-40 hidden lg:block",
         side === "left" ? "-left-2 xl:-left-4" : "-right-2 xl:-right-4",
       ].join(" ")}
       aria-label={alt}
